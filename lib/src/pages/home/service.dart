@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_spa/src/pages/home/beauty.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
 import '../../theme/Color.dart';
 import '../../theme/Metrics.dart';
-import '../../widgets/button.dart';
 
 class Service extends StatelessWidget {
   const Service({super.key});
@@ -21,14 +22,15 @@ class Service extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: padding_regular.left),
         ),
         Container(
-            padding: padding_regular,
-            child: const Column(
+            padding: EdgeInsets.symmetric(vertical: padding_regular.top),
+            child: const Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Item("Lưu trú"),
-                Item("Làm đẹp"),
-                Item("Điều trị tại nhà")
+                Item("Lưu trú", Beauty()),
+                Item("Làm đẹp", Beauty()),
+                Item("Chăm sóc", Beauty()),
+                Item("Tư vấn", Beauty()),
               ],
             ))
       ],
@@ -38,50 +40,35 @@ class Service extends StatelessWidget {
 
 class Item extends StatelessWidget {
   final String title;
-  const Item(this.title, {super.key});
+  final Widget widget;
+  const Item(this.title, this.widget, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final double width =
-        (MediaQuery.of(context).size.width - padding_regular.left * 2);
-    return Container(
-      width: width,
-      height: 160,
-      margin: EdgeInsets.only(bottom: padding_regular.bottom),
-      padding: EdgeInsets.only(
-          bottom: padding_tiny.bottom,
-          left: padding_medium.left,
-          right: padding_tiny.right),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(radius_tiny),
-          border: Border.all(width: 2, color: color_secondary_2),
-          image: const DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/lodging.png',
-              ))),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              width: 130,
-              height: 30,
-              child: AppHeading2Text(
-                title,
-                color: Colors.white,
-              )),
-          AppButton(
-              width: 75,
-              height: 30,
-              backgroundColor: color_green,
-              type: ButtonType.TextButton,
-              size: 12,
-              text: 'Đặt ngay',
-              radius: radius_tiny,
-              onPress: () {})
-        ],
-      ),
-    );
+    final double size = (MediaQuery.of(context).size.width) / 4;
+    return GestureDetector(
+        onTap: () => Navigator.push(
+            context, CupertinoPageRoute(builder: (context) => widget)),
+        child: SizedBox(
+          width: size,
+          height: size,
+          child: Column(children: [
+            Container(
+                margin: EdgeInsets.only(bottom: padding_tiny.bottom),
+                decoration: BoxDecoration(
+                  color: color_primary,
+                  borderRadius: BorderRadius.all(Radius.circular(size)),
+                ),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(size)),
+                    child: Image.asset(
+                      'assets/lodging.png',
+                      fit: BoxFit.cover,
+                      width: size - padding_large.left,
+                      height: size - padding_large.left,
+                    ))),
+            AppLabelText(title)
+          ]),
+        ));
   }
 }

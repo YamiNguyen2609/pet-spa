@@ -51,46 +51,47 @@ class _BeautyServiceState extends State<BeautyService> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / 3;
-    double height = 45;
+    double _height = 47;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-              margin: EdgeInsets.only(bottom: padding_tiny.bottom),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                      combos.length,
-                      (index) => Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      width: state == index ? 3 : 2,
-                                      color: state == index
-                                          ? color_primary
-                                          : Colors.black12))),
-                          child: AppButton(
-                              type: ButtonType.TextButton,
-                              size: 16,
-                              text: combos[index].name,
-                              backgroundColor: Colors.transparent,
-                              textColor: state == index
-                                  ? color_primary
-                                  : Colors.black54,
-                              width: width,
-                              height: height,
-                              onPress: () {
-                                onPressTab(index);
-                              }))))),
+          Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                  combos.length,
+                  (index) => Container(
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: state == index ? 3 : 2,
+                                  color: state == index
+                                      ? color_primary
+                                      : Colors.black12))),
+                      child: AppButton(
+                          type: ButtonType.TextButton,
+                          size: text_size_sub,
+                          text: combos[index].name,
+                          backgroundColor: Colors.transparent,
+                          textColor:
+                              state == index ? color_primary : Colors.black54,
+                          width: width,
+                          height: _height,
+                          onPress: () {
+                            onPressTab(index);
+                          })))),
           CarouselSlider(
             carouselController: carouselController,
             options: CarouselOptions(
               enableInfiniteScroll: false,
-              height: MediaQuery.of(context).size.height -
-                  140 -
-                  padding_tiny.bottom,
+              height: Utils.height(context) -
+                  _height -
+                  60 -
+                  3 -
+                  120 -
+                  status_bar_height -
+                  padding_bottom,
               initialPage: 0,
               autoPlay: false,
               enlargeCenterPage: false,
@@ -112,7 +113,8 @@ class _BeautyServiceState extends State<BeautyService> {
                       onSelectOption: setSelectedItem,
                     ))
                 .toList(),
-          )
+          ),
+          const Bugdet(1200000)
         ]);
   }
 }
@@ -136,9 +138,8 @@ class Item extends StatelessWidget {
             size: 6,
           ),
           Flexible(
-              child: AppText(
+              child: AppSubTitleText(
             data[i],
-            size: 14,
             margin: EdgeInsets.only(left: padding_tiny.left),
           ))
         ]))
@@ -152,9 +153,8 @@ class Item extends StatelessWidget {
             size: 6,
           ),
           Flexible(
-              child: AppText(
+              child: AppSubTitleText(
             data[i + 1],
-            size: 14,
             margin: EdgeInsets.only(left: padding_tiny.left),
           ))
         ])));
@@ -175,8 +175,11 @@ class Item extends StatelessWidget {
             Container(
                 width: MediaQuery.of(context).size.width,
                 padding: padding_small,
-                margin: EdgeInsets.symmetric(
-                    horizontal: padding_small.left, vertical: padding_tiny.top),
+                margin: EdgeInsets.only(
+                    left: padding_small.left,
+                    right: padding_small.left,
+                    top: padding_small.top,
+                    bottom: padding_tiny.bottom),
                 decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black12),
                     borderRadius: const BorderRadius.all(radius_small)),
@@ -207,38 +210,81 @@ class Item extends StatelessWidget {
                       'Dịch vụ thêm',
                       color: Colors.black54,
                     ),
-                    AppListView(
-                        data: options,
-                        height: 60.0 * options.length,
-                        child: (context, option, idx) => Container(
+                    ...List.generate(
+                        options.length,
+                        (index) => Container(
                               alignment: Alignment.centerLeft,
                               width: MediaQuery.of(context).size.width -
                                   padding_regular.left * 2,
-                              height: 60,
+                              height: 50,
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     AppCheckbox(
-                                      option.name,
-                                      selectedOptions.contains(option.id),
-                                      size: 14,
-                                      onPress: () => onSelectOption(option.id),
+                                      options[index].name,
+                                      selectedOptions
+                                          .contains(options[index].id),
+                                      size: 20,
+                                      textSize: text_size_sub,
+                                      onPress: () =>
+                                          onSelectOption(options[index].id),
                                     ),
-                                    AppLabelMediumText(
-                                        Utils.FormatCurrency(option.value))
+                                    AppLabelMediumText(Utils.FormatCurrency(
+                                        options[index].value))
                                   ]),
                             ))
                   ],
                 ))
           ],
         ),
-        Container(
-          decoration: const BoxDecoration(
-              border: Border(top: BorderSide(width: 1, color: Colors.black12))),
-        )
       ],
+    );
+  }
+}
+
+class Bugdet extends StatelessWidget {
+  final double value;
+  const Bugdet(this.value, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(
+          left: padding_regular.left,
+          right: padding_regular.right,
+          bottom: padding_bottom),
+      decoration: const BoxDecoration(
+          border: Border(top: BorderSide(width: 2, color: Colors.black12))),
+      child: Column(children: [
+        Container(
+            alignment: Alignment.centerLeft,
+            height: 60,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AppHeading2Text(
+                  'Tổng tiền',
+                  color: Colors.black54,
+                ),
+                AppHeading1Text(
+                  Utils.FormatCurrency(value),
+                  color: color_red,
+                )
+              ],
+            )),
+        AppButton(
+          type: ButtonType.TextButton,
+          width: Utils.width(context),
+          height: 50,
+          backgroundColor: color_primary,
+          radius: radius_small,
+          text: 'Sử dụng',
+          onPress: () {},
+        )
+      ]),
     );
   }
 }

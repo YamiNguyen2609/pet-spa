@@ -15,7 +15,7 @@ import '../../ultis/utils.dart';
 import '../../widgets/checkbox.dart';
 import '../data/data.dart';
 
-const double component_height = 68;
+const double component_height = 71;
 
 class Beauty extends StatefulWidget {
   const Beauty({super.key});
@@ -35,9 +35,9 @@ class _BeautyState extends State<Beauty> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
-        child: SafeArea(
+        body: SafeArea(
             child: Column(children: [
           const Header("Dịch vụ Spa"),
           AppScollview(children: [
@@ -72,7 +72,6 @@ class _BeautyState extends State<Beauty> {
                 ),
               ]),
             ),
-            // const BeautyService(),
           ]),
         ])));
   }
@@ -89,11 +88,13 @@ class ContainerText extends StatelessWidget {
       height: component_height,
       margin: EdgeInsets.only(bottom: padding_small.bottom),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppLabelMediumText(
+            AppText(
               label,
+              size: text_size_medium,
+              weight: FontWeight.w500,
               color: Colors.black54,
             ),
             AppInput(
@@ -125,8 +126,10 @@ class ChoosePanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppLabelMediumText(
+            AppText(
               label,
+              size: text_size_medium,
+              weight: FontWeight.w500,
               color: Colors.black54,
             ),
             GestureDetector(
@@ -174,7 +177,7 @@ class PetPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double item_size = 60;
+    const double item_size = 80;
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: item_size * items.length + 55 <=
@@ -198,7 +201,7 @@ class PetPanel extends StatelessWidget {
                       color: Colors.black54,
                       size: 25,
                     ),
-                    const AppSubTitleText(
+                    const AppHeading1Text(
                       'Thú cưng của bạn',
                       color: Colors.black54,
                     ),
@@ -240,12 +243,12 @@ class PetPanel extends StatelessWidget {
                                       borderRadius:
                                           const BorderRadius.all(radius_large),
                                       child: Image.asset('assets/avatar.png',
-                                          width: 40,
-                                          height: 40,
+                                          width: 50,
+                                          height: 50,
                                           fit: BoxFit.cover))),
                               Expanded(
                                   child: SizedBox(
-                                      height: 35,
+                                      height: 50,
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -254,22 +257,25 @@ class PetPanel extends StatelessWidget {
                                         children: [
                                           Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.start,
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                AppText(
+                                                AppHeading2Text(
                                                   item.name,
                                                   weight: FontWeight.bold,
                                                 ),
-                                                AppText(Utils.CalculateAge(
-                                                    DateTime.parse(
-                                                        item.birthday)))
+                                                AppSubTitleText(
+                                                  Utils.CalculateAge(
+                                                      DateTime.parse(
+                                                          item.birthday)),
+                                                  weight: FontWeight.w500,
+                                                )
                                               ]),
                                           Container(
-                                              width: 15,
-                                              height: 15,
+                                              width: 20,
+                                              height: 20,
                                               padding: const EdgeInsets.all(2),
                                               decoration: BoxDecoration(
                                                   borderRadius:
@@ -286,7 +292,7 @@ class PetPanel extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           const BorderRadius
-                                                                  .all(
+                                                              .all(
                                                               radius_regular),
                                                       color: value == item.id
                                                           ? color_primary
@@ -309,7 +315,6 @@ class ComboPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double item_size = 60;
     return Container(
         color: Colors.white,
         width: MediaQuery.of(context).size.width,
@@ -317,8 +322,11 @@ class ComboPanel extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 55,
-              padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
+              height: 60,
+              padding: EdgeInsets.only(
+                left: padding_tiny.left,
+                right: padding_tiny.right,
+              ),
               decoration: const BoxDecoration(
                   border: Border(
                       bottom: BorderSide(width: 2, color: Colors.black26))),
@@ -331,7 +339,7 @@ class ComboPanel extends StatelessWidget {
                       color: Colors.black54,
                       size: 25,
                     ),
-                    const AppSubTitleText(
+                    const AppHeading1Text(
                       'Gói dịch vụ',
                       color: Colors.black54,
                     ),

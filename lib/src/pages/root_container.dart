@@ -25,6 +25,6 @@ class _RootContainerState extends State<RootContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Beauty());
+    return const Scaffold(body: Main());
   }
 }

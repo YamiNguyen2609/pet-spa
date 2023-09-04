@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Color.dart';
+import 'package:pet_spa/src/theme/Metrics.dart';
 
 class AppText extends StatelessWidget {
   final String text;
@@ -11,8 +12,8 @@ class AppText extends StatelessWidget {
   final int? line;
   const AppText(this.text,
       {super.key,
-      this.weight = FontWeight.normal,
-      this.size = 12,
+      this.weight = FontWeight.w500,
+      this.size = text_size_normal,
       this.line,
       this.overflow,
       this.color = color_primary,
@@ -39,33 +40,6 @@ class AppText extends StatelessWidget {
   }
 }
 
-class AppLabelMediumText extends StatelessWidget {
-  final String text;
-  final Color color;
-  final EdgeInsets margin;
-  final FontWeight weight;
-  final TextOverflow? overflow;
-  final int? line;
-  const AppLabelMediumText(this.text,
-      {super.key,
-      this.line,
-      this.overflow,
-      this.weight = FontWeight.w900,
-      this.color = color_primary,
-      this.margin = EdgeInsets.zero});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppText(text,
-        weight: weight,
-        size: 14,
-        color: color,
-        margin: margin,
-        overflow: overflow,
-        line: line);
-  }
-}
-
 class AppLabelText extends StatelessWidget {
   final String text;
   final Color color;
@@ -85,7 +59,34 @@ class AppLabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppText(text,
         weight: weight,
-        size: 12,
+        size: text_size_label,
+        color: color,
+        margin: margin,
+        overflow: overflow,
+        line: line);
+  }
+}
+
+class AppLabelMediumText extends StatelessWidget {
+  final String text;
+  final Color color;
+  final EdgeInsets margin;
+  final FontWeight weight;
+  final TextOverflow? overflow;
+  final int? line;
+  const AppLabelMediumText(this.text,
+      {super.key,
+      this.line,
+      this.overflow,
+      this.weight = FontWeight.w900,
+      this.color = color_primary,
+      this.margin = EdgeInsets.zero});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppText(text,
+        weight: weight,
+        size: text_size_medium,
         color: color,
         margin: margin,
         overflow: overflow,
@@ -112,7 +113,7 @@ class AppSubTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppText(text,
         weight: weight,
-        size: 16,
+        size: text_size_sub,
         color: color,
         margin: margin,
         overflow: overflow,
@@ -139,7 +140,7 @@ class AppHeading2Text extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppText(text,
         weight: weight,
-        size: 18,
+        size: text_size_heading_2,
         color: color,
         margin: margin,
         overflow: overflow,
@@ -166,7 +167,7 @@ class AppHeading1Text extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppText(text,
         weight: weight,
-        size: 20,
+        size: text_size_heading_1,
         color: color,
         margin: margin,
         overflow: overflow,

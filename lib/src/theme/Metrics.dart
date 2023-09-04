@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const double status_bar_height = 50;
+const double padding_bottom = 20;
+
 //marign - padding
 const EdgeInsets padding_tiny = EdgeInsets.all(10);
 const EdgeInsets padding_small = EdgeInsets.all(15);
@@ -19,3 +22,10 @@ const double icon_small = 15;
 const double icon_regular = 20;
 const double icon_medium = 25;
 const double icon_large = 30;
+
+const double text_size_normal = 12;
+const double text_size_label = 14;
+const double text_size_medium = 16;
+const double text_size_sub = 18;
+const double text_size_heading_2 = 20;
+const double text_size_heading_1 = 22;

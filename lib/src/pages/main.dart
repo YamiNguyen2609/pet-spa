@@ -4,7 +4,6 @@ import 'package:pet_spa/src/pages/home/home.dart';
 import 'package:pet_spa/src/pages/settings/Setting.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
-import 'package:pet_spa/src/widgets/button.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -34,7 +33,7 @@ class _MainState extends State<Main> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
-          children: [SafeArea(child: widgets[_selectedIndex])],
+          children: [widgets[_selectedIndex]],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
@@ -55,12 +54,13 @@ class _MainState extends State<Main> {
           ),
         ),
         bottomNavigationBar: Container(
-            padding: padding_tiny,
+            height: 70,
+            padding: EdgeInsets.only(bottom: padding_small.bottom),
             decoration: const BoxDecoration(
               color: color_primary,
             ),
             child: Row(
-              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 NavigationItem(
@@ -104,11 +104,11 @@ class NavigationItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPress(),
       child: SizedBox(
-        height: 30,
-        width: 30,
+        height: 35,
+        width: 35,
         child: Icon(
           icon,
-          size: 30,
+          size: 35,
           color: state ? Colors.white : Colors.white38,
         ),
       ),
