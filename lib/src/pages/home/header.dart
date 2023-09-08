@@ -13,11 +13,15 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     const double iconSize = 25;
     return Container(
-        height: 70,
-        padding: EdgeInsets.symmetric(
-            horizontal: padding_small.left, vertical: padding_regular.top),
+        color: Colors.white,
+        height: 70 + status_bar_height,
+        padding: EdgeInsets.only(
+            left: padding_small.left,
+            right: padding_small.left,
+            top: status_bar_height + padding_regular.top,
+            bottom: padding_regular.top),
         child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(

@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
-const double status_bar_height = 50;
-const double padding_bottom = 20;
+double status_bar_height = Platform.isIOS ? 50 : 30;
+double padding_bottom = Platform.isIOS ? 20 : 10;
+double height_default = 71;
 
 //marign - padding
 const EdgeInsets padding_tiny = EdgeInsets.all(10);

@@ -4,8 +4,9 @@ class PetServiceComboModel {
   int id;
   String name;
   bool checked;
+  double cost;
   List<String> items;
   List<PetServiceOptionModel>? options;
   PetServiceComboModel(
-      this.id, this.name, this.items, this.options, this.checked);
+      this.id, this.name, this.cost, this.items, this.options, this.checked);
 }

@@ -30,7 +30,6 @@ class Service extends StatelessWidget {
                 Item("Lưu trú", Beauty()),
                 Item("Làm đẹp", Beauty()),
                 Item("Chăm sóc", Beauty()),
-                Item("Tư vấn", Beauty()),
               ],
             ))
       ],
@@ -45,13 +44,13 @@ class Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = (MediaQuery.of(context).size.width) / 4;
+    final double size = (MediaQuery.of(context).size.width) / 3;
     return GestureDetector(
         onTap: () => Navigator.push(
             context, CupertinoPageRoute(builder: (context) => widget)),
         child: SizedBox(
           width: size,
-          height: size,
+          height: size + padding_tiny.bottom,
           child: Column(children: [
             Container(
                 margin: EdgeInsets.only(bottom: padding_tiny.bottom),
@@ -67,7 +66,10 @@ class Item extends StatelessWidget {
                       width: size - padding_large.left,
                       height: size - padding_large.left,
                     ))),
-            AppLabelText(title)
+            AppSubTitleText(
+              title,
+              color: Colors.black87,
+            )
           ]),
         ));
   }

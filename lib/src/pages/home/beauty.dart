@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pet_spa/src/pages/home/beauty_service.dart';
 import 'package:pet_spa/src/pages/home/header.dart';
+import 'package:pet_spa/src/pages/home/time_service.dart';
 import 'package:pet_spa/src/pages/pet/pet_model.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
@@ -12,6 +14,7 @@ import 'package:pet_spa/src/widgets/scrollview.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
 import '../../ultis/utils.dart';
+import '../../widgets/Calendar.dart';
 import '../../widgets/checkbox.dart';
 import '../data/data.dart';
 
@@ -26,6 +29,7 @@ class Beauty extends StatefulWidget {
 
 class _BeautyState extends State<Beauty> {
   int _selectedPet = 0;
+  int _selectedCombo = 0;
   void _setPet(item) {
     setState(() {
       _selectedPet = item;
@@ -33,26 +37,44 @@ class _BeautyState extends State<Beauty> {
     });
   }
 
+  void _setCombo(item, options) {
+    setState(() {
+      _selectedCombo = item;
+      Navigator.pop(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-            child: Column(children: [
+        backgroundColor: background_color,
+        body: Column(children: [
           const Header("Dịch vụ Spa"),
           AppScollview(children: [
             Container(
               padding: padding_small,
-              margin: EdgeInsets.symmetric(
-                  horizontal: padding_small.left, vertical: padding_tiny.top),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.black12),
-                  borderRadius: const BorderRadius.all(radius_small)),
+              margin: padding_small,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(radius_small)),
               child: Column(children: [
-                const ContainerText('Chủ thú cưng'),
-                const ContainerText(
-                  'Số điện thoại',
-                  type: InputType.PhoneInput,
+                AppInput(
+                    textColor: color_primary,
+                    label: 'Chủ thú cưng',
+                    margin: EdgeInsets.only(bottom: padding_small.bottom),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: padding_tiny.left)),
+                AppInput(
+                    type: InputType.PhoneInput,
+                    textColor: color_primary,
+                    label: 'Số điện thoại',
+                    margin: EdgeInsets.only(bottom: padding_small.bottom),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: padding_tiny.left)),
+                TimeService(
+                  DateTime.now(),
+                  height: component_height,
+                  margin: EdgeInsets.only(bottom: padding_small.bottom),
                 ),
                 ChoosePanel(
                   'Thú cưng',
@@ -66,45 +88,18 @@ class _BeautyState extends State<Beauty> {
                 ),
                 ChoosePanel(
                   'Gói dịch vụ',
-                  false,
-                  'Chọn gói dịch vụ',
-                  ComboPanel(pets, _selectedPet, onPress: _setPet),
-                ),
+                  _selectedCombo > 0,
+                  _selectedCombo > 0
+                      ? combos
+                          .firstWhere((element) => element.id == _selectedCombo)
+                          .name
+                      : 'Chọn gói dịch vụ',
+                  ComboPanel(pets, _selectedPet, onPress: _setCombo),
+                )
               ]),
             ),
           ]),
-        ])));
-  }
-}
-
-class ContainerText extends StatelessWidget {
-  final String label;
-  final InputType? type;
-  const ContainerText(this.label, {super.key, this.type});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: component_height,
-      margin: EdgeInsets.only(bottom: padding_small.bottom),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              label,
-              size: text_size_medium,
-              weight: FontWeight.w500,
-              color: Colors.black54,
-            ),
-            AppInput(
-                type: type,
-                textColor: color_primary,
-                placeholder: "Vui lòng nhập ${label.toLowerCase()}",
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: padding_tiny.left))
-          ]),
-    );
+        ]));
   }
 }
 
@@ -133,13 +128,72 @@ class ChoosePanel extends StatelessWidget {
               color: Colors.black54,
             ),
             GestureDetector(
+              onTap: () => showModalBottomSheet(
+                  context: context,
+                  useSafeArea: true,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(top: radius_small),
+                  ),
+                  builder: (BuildContext context) {
+                    return widget;
+                  }),
+              child: Container(
+                width:
+                    MediaQuery.of(context).size.width - padding_small.left * 2,
+                padding: EdgeInsets.only(
+                    top: padding_tiny.top,
+                    bottom: padding_tiny.bottom,
+                    right: padding_tiny.right),
+                // margin: EdgeInsets.only(bottom: padding_small.bottom),
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 2, color: Colors.black26))),
+                child: AppText(
+                  value,
+                  color: isValue ? color_primary : Colors.black26,
+                  weight: FontWeight.w500,
+                  size: 16,
+                ),
+              ),
+            )
+          ]),
+    );
+  }
+}
+
+class ChooseCenterPanel extends StatelessWidget {
+  final String label;
+  final Widget widget;
+  final String value;
+  final bool isValue;
+  final EdgeInsets margin;
+  const ChooseCenterPanel(this.label, this.isValue, this.value, this.widget,
+      {super.key, this.margin = EdgeInsets.zero});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: component_height,
+      margin: EdgeInsets.only(bottom: padding_small.bottom),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText(
+              label,
+              size: text_size_medium,
+              weight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+            GestureDetector(
               onTap: () {
                 showModalBottomSheet(
                     context: context,
-                    useSafeArea: true,
+                    useSafeArea: false,
                     isScrollControlled: true,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: radius_small),
+                      borderRadius: BorderRadius.vertical(top: radius_regular),
                     ),
                     builder: (BuildContext context) {
                       return widget;
@@ -177,7 +231,7 @@ class PetPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double item_size = 80;
+    const double item_size = 70;
     return SizedBox(
         width: MediaQuery.of(context).size.width,
         height: item_size * items.length + 55 <=
@@ -187,11 +241,8 @@ class PetPanel extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 55,
+              height: 50,
               padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
-              decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: 2, color: Colors.black26))),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,7 +299,7 @@ class PetPanel extends StatelessWidget {
                                           fit: BoxFit.cover))),
                               Expanded(
                                   child: SizedBox(
-                                      height: 50,
+                                      height: item_size - padding_small.top,
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -292,7 +343,7 @@ class PetPanel extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                       borderRadius:
                                                           const BorderRadius
-                                                              .all(
+                                                                  .all(
                                                               radius_regular),
                                                       color: value == item.id
                                                           ? color_primary
@@ -316,20 +367,21 @@ class ComboPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white,
+        decoration: const BoxDecoration(
+            color: background_color,
+            borderRadius: BorderRadius.vertical(top: radius_medium)),
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height -
+            status_bar_height -
+            padding_large.top,
         child: Column(
           children: [
             Container(
-              height: 60,
-              padding: EdgeInsets.only(
-                left: padding_tiny.left,
-                right: padding_tiny.right,
-              ),
+              height: 50,
+              padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
               decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: 2, color: Colors.black26))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: radius_medium)),
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,7 +406,7 @@ class ComboPanel extends StatelessWidget {
                         )),
                   ]),
             ),
-            BeautyService()
+            BeautyService(onPress: onPress)
           ],
         ));
   }

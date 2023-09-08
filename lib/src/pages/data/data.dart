@@ -21,6 +21,7 @@ final List<PetServiceComboModel> combos = [
   PetServiceComboModel(
       1,
       "Mát mẻ",
+      230000,
       [
         'Vệ sinh tai',
         'Chải lông rụng',
@@ -34,6 +35,7 @@ final List<PetServiceComboModel> combos = [
   PetServiceComboModel(
       2,
       "Mơn mởn",
+      300000,
       [
         'Cắt móng',
         'Vệ sinh tai',
@@ -50,6 +52,7 @@ final List<PetServiceComboModel> combos = [
   PetServiceComboModel(
       3,
       "Mẫu mực",
+      1000000,
       [
         'Cắt móng',
         'Vệ sinh tai',

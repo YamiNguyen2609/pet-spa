@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/pages/appointment/appointment.dart';
+import 'package:pet_spa/src/pages/home/beauty.dart';
 import 'package:pet_spa/src/pages/home/home.dart';
 import 'package:pet_spa/src/pages/settings/Setting.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
+import 'package:pet_spa/src/ultis/utils.dart';
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -16,7 +18,7 @@ class _MainState extends State<Main> {
   int _selectedIndex = 0;
   static const List<Widget> widgets = <Widget>[
     Home(),
-    Appointment(),
+    Beauty(),
     Home(),
     Home(),
     Setting(),
@@ -31,64 +33,137 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: Stack(
           children: [widgets[_selectedIndex]],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _onItemTapped(2),
-          backgroundColor: Colors.white,
-          shape: const CircleBorder(),
+        floatingActionButton: GestureDetector(
           child: Container(
-            padding: padding_tiny,
+            width: 60,
+            height: 60,
+            margin: EdgeInsets.only(top: padding_small.top),
             decoration: const BoxDecoration(
-              color: color_primary,
-              borderRadius: BorderRadius.all(radius_large),
-            ),
-            child: Icon(
+                color: background_color_secondary,
+                borderRadius: BorderRadius.all(Radius.circular(40))),
+            child: const Icon(
               Icons.qr_code_2_rounded,
-              size: 30,
-              color: _selectedIndex == 2 ? Colors.white : Colors.white38,
+              color: Colors.white,
+              size: 40,
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-            height: 70,
-            padding: EdgeInsets.only(bottom: padding_small.bottom),
-            decoration: const BoxDecoration(
-              color: color_primary,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+        bottomNavigationBar: Navigation(
+          _selectedIndex,
+          onPress: _onItemTapped,
+        ));
+  }
+}
+
+class Navigation extends StatelessWidget {
+  final int index;
+  final Function onPress;
+  const Navigation(this.index, {super.key, required this.onPress});
+
+  @override
+  Widget build(BuildContext context) {
+    Radius radius = Radius.circular(40);
+    double width = 60;
+    double height = 60;
+    return Container(
+      height: height,
+      color: background_color,
+      child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+                child: Container(
+              height: height,
+              color: background_color_secondary,
+              padding: EdgeInsets.only(left: padding_regular.left),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    NavigationItem(
+                      Icons.home,
+                      index == 0,
+                      onPress: () => onPress(0),
+                    ),
+                    NavigationItem(
+                      Icons.access_time,
+                      index == 1,
+                      onPress: () => onPress(1),
+                    ),
+                  ]),
+            )),
+            Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                NavigationItem(
-                  Icons.home,
-                  _selectedIndex == 0,
-                  onPress: () => _onItemTapped(0),
-                ),
-                NavigationItem(
-                  Icons.access_time,
-                  _selectedIndex == 1,
-                  onPress: () => _onItemTapped(1),
-                ),
-                const SizedBox(
-                  width: 30,
-                  height: 30,
-                ),
-                NavigationItem(
-                  Icons.shop,
-                  _selectedIndex == 3,
-                  onPress: () => _onItemTapped(3),
-                ),
-                NavigationItem(
-                  Icons.person,
-                  _selectedIndex == 4,
-                  onPress: () => _onItemTapped(4),
+                SizedBox(
+                    width: 100 + width,
+                    height: height / 2,
+                    child: ColoredBox(color: background_color_secondary)),
+                Padding(
+                    padding: EdgeInsets.only(bottom: padding_small.bottom),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(bottom: radius),
+                        child: SizedBox(
+                          width: width + 20,
+                          height: height,
+                          child: ColoredBox(color: background_color),
+                        ))),
+                SizedBox(
+                  width: 100 + width,
+                  height: height,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ClipRRect(
+                          borderRadius: BorderRadius.only(topRight: radius),
+                          child: SizedBox(
+                            width: 50,
+                            height: height,
+                            child:
+                                ColoredBox(color: background_color_secondary),
+                          )),
+                      ClipRRect(
+                          borderRadius: BorderRadius.only(topLeft: radius),
+                          child: SizedBox(
+                            width: 50,
+                            height: height,
+                            child:
+                                ColoredBox(color: background_color_secondary),
+                          ))
+                    ],
+                  ),
                 ),
               ],
-            )));
+            ),
+            Flexible(
+                child: Container(
+              height: height,
+              color: background_color_secondary,
+              padding: EdgeInsets.only(right: padding_regular.left),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    NavigationItem(
+                      Icons.message_rounded,
+                      index == 3,
+                      onPress: () => onPress(0),
+                    ),
+                    NavigationItem(
+                      Icons.person,
+                      index == 4,
+                      onPress: () => onPress(1),
+                    ),
+                  ]),
+            )),
+          ]),
+    );
   }
 }
 

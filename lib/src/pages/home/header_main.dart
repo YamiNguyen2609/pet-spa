@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../../theme/Color.dart';
@@ -11,11 +13,11 @@ class HeaderMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-          border:
-              Border(bottom: BorderSide(width: 1.5, color: Colors.black12))),
-      padding: EdgeInsets.fromLTRB(
-          padding_tiny.left, padding_tiny.top, 5, padding_tiny.bottom),
+      padding: EdgeInsets.only(
+          left: padding_tiny.left,
+          right: padding_tiny.right,
+          bottom: padding_tiny.bottom,
+          top: status_bar_height + padding_tiny.top),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,13 +59,13 @@ class HeaderMain extends StatelessWidget {
                   ))
             ],
           ),
-          AppButton(
-            onPress: () => {},
-            type: ButtonType.IconButton,
-            icon: const Icon(Icons.map_rounded),
-            iconColor: color_secondary_1,
-            iconSize: 30,
-          ),
+          // AppButton(
+          //   onPress: () => {},
+          //   type: ButtonType.IconButton,
+          //   icon: Icons.map_rounded,
+          //   iconColor: color_secondary_1,
+          //   iconSize: 30,
+          // ),
         ],
       ),
     );

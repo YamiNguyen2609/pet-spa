@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
+import 'package:pet_spa/src/widgets/text.dart';
+
+import '../ultis/utils.dart';
 
 enum InputType { TextInput, PasswordInput, NumberInput, PhoneInput }
 
 class AppInput extends StatelessWidget {
   final InputType? type;
+  final String label;
+  final double width;
+  final double height;
   final String placeholder;
   final Icon? icon;
   final Color iconColor;
@@ -14,13 +20,18 @@ class AppInput extends StatelessWidget {
   final Color backgroundColor;
   final double border;
   final Color borderColor;
+  final EdgeInsets margin;
+  final EdgeInsets padding;
   final EdgeInsets contentPadding;
 
   const AppInput(
       {super.key,
+      this.width = 0,
+      this.height = 0,
       this.type = InputType.TextInput,
       this.textColor = Colors.black54,
-      required this.placeholder,
+      this.label = '',
+      this.placeholder = '',
       this.placeholderColor = Colors.black26,
       this.icon,
       this.iconColor = Colors.transparent,
@@ -28,10 +39,14 @@ class AppInput extends StatelessWidget {
       this.backgroundColor = Colors.transparent,
       this.border = 0,
       this.borderColor = Colors.black26,
+      this.margin = EdgeInsets.zero,
+      this.padding = EdgeInsets.zero,
       this.contentPadding = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {
+    double Width = width > 0 ? width : Utils.width(context);
+    double Height = height > 0 ? height : height_default;
     TextInputType keyboardType = TextInputType.text;
     if (type == InputType.NumberInput) {
       keyboardType = TextInputType.number;
@@ -46,20 +61,38 @@ class AppInput extends StatelessWidget {
           borderSide: BorderSide(color: borderColor, width: border));
     }
 
-    return TextField(
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-          prefixIcon: icon,
-          prefixIconColor: iconColor,
-          filled: true,
-          fillColor: backgroundColor,
-          contentPadding: contentPadding,
-          focusedBorder: inputBorder,
-          border: inputBorder,
-          enabledBorder: inputBorder,
-          hintText: placeholder,
-          hintStyle: TextStyle(color: placeholderColor)),
-      style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+    return Container(
+      width: Width,
+      height: Height,
+      margin: margin,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            AppText(
+              label,
+              size: text_size_medium,
+              weight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+            TextField(
+              keyboardType: keyboardType,
+              decoration: InputDecoration(
+                  prefixIcon: icon,
+                  prefixIconColor: iconColor,
+                  filled: true,
+                  fillColor: backgroundColor,
+                  contentPadding: contentPadding,
+                  focusedBorder: inputBorder,
+                  border: inputBorder,
+                  enabledBorder: inputBorder,
+                  hintText: placeholder == ''
+                      ? 'Vui lòng nhập ${label.toLowerCase()}'
+                      : placeholder,
+                  hintStyle: TextStyle(color: placeholderColor)),
+              style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+            )
+          ]),
     );
   }
 }

@@ -51,7 +51,7 @@ class PetItem extends StatelessWidget {
                           onPress: () {})),
                   AppButton(
                     type: ButtonType.IconButton,
-                    icon: const Icon(Icons.add),
+                    icon: Icons.add,
                     height: size,
                     radius: radius_large,
                     iconColor: color_primary,

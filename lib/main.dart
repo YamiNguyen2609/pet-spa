@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pet_spa/src/pages/root_container.dart';
 import 'package:pet_spa/src/theme/Theme.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +25,10 @@ class _MyAppState extends State<MyApp> {
         darkTheme: darkTheme,
         themeMode: _themeMode,
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        supportedLocales: const [
+          Locale('vi', ''),
+        ],
         home: const RootContainer());
   }
 }

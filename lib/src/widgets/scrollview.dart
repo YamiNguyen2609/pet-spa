@@ -23,6 +23,7 @@ class AppScollview extends StatelessWidget {
         padding: padding,
         child: ListView(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: const ScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             children: children),

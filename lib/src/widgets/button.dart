@@ -3,13 +3,15 @@ import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
+import '../ultis/utils.dart';
+
 enum ButtonType { TextButton, IconButton, ImageButton, CustomButton }
 
 class AppButton extends StatelessWidget {
   final String text;
   final Color textColor;
   final FontWeight textWeight;
-  final Icon icon;
+  final IconData icon;
   final double iconSize;
   final Color iconColor;
   final String image;
@@ -32,7 +34,7 @@ class AppButton extends StatelessWidget {
       this.text = "",
       this.textColor = Colors.white,
       this.textWeight = FontWeight.w500,
-      this.icon = const Icon(null),
+      this.icon = Icons.arrow_back_ios_rounded,
       this.iconSize = 20,
       this.iconColor = Colors.transparent,
       this.image = "logo.png",
@@ -53,8 +55,8 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double Width = width > 0 ? width : 60;
-    double Height = height > 0 ? height : 50;
+    double Width = width > 0 ? width : Utils.width(context);
+    double Height = height > 0 ? height : height_default;
     EdgeInsets padding = margin;
     if (marginHorizontal != EdgeInsets.zero ||
         marginVertical != EdgeInsets.zero) {
@@ -63,16 +65,16 @@ class AppButton extends StatelessWidget {
     }
     switch (type) {
       case ButtonType.TextButton:
-        return Container(
-          width: Width,
-          height: Height,
-          padding: padding,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(radius),
-              border: Border.all(width: borderWidth, color: borderColor),
-              color: backgroundColor),
-          child: GestureDetector(
-              onTap: onPress,
+        return GestureDetector(
+          onTap: onPress,
+          child: Container(
+              width: Width,
+              height: Height,
+              padding: padding,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(radius),
+                  border: Border.all(width: borderWidth, color: borderColor),
+                  color: backgroundColor),
               child: Center(
                 child: AppText(
                   text,
@@ -83,57 +85,52 @@ class AppButton extends StatelessWidget {
               )),
         );
       case ButtonType.IconButton:
-        return Padding(
-            padding: padding,
+        return GestureDetector(
+            onTap: onPress,
             child: Container(
-                width: Height,
+                width: Width,
                 height: Height,
+                padding: padding,
                 decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(radius),
                     border: Border.all(width: borderWidth, color: borderColor),
-                    borderRadius: BorderRadius.all(radius),
                     color: backgroundColor),
-                child: IconButton(
-                  icon: icon,
-                  iconSize: iconSize,
+                child: Center(
+                    child: Icon(
+                  icon,
+                  size: iconSize,
                   color: iconColor,
-                  onPressed: onPress,
-                )));
+                ))));
       case ButtonType.ImageButton:
-        return Padding(
-            padding: padding,
-            child: SizedBox(
+        return GestureDetector(
+            onTap: onPress,
+            child: Container(
                 width: Width,
                 height: Height,
-                child: ClipRRect(
+                padding: padding,
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(radius),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: borderWidth, color: borderColor),
-                            borderRadius: BorderRadius.all(radius),
-                            color: backgroundColor),
-                        child: GestureDetector(
-                          child: Image.asset(
-                            'assets/$image',
-                            width: width - 10,
-                            height: height - 10,
-                          ),
-                        )))));
+                    border: Border.all(width: borderWidth, color: borderColor),
+                    color: backgroundColor),
+                child: Center(
+                    child: Image.asset(
+                  'assets/$image',
+                  width: width - 10,
+                  height: height - 10,
+                ))));
       case ButtonType.CustomButton:
-        return Padding(
-            padding: padding,
-            child: SizedBox(
-                width: Width,
-                height: Height,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(radius),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: borderWidth, color: borderColor),
-                            borderRadius: BorderRadius.all(radius),
-                            color: backgroundColor),
-                        child: widget))));
+        return GestureDetector(
+          onTap: onPress,
+          child: Container(
+              width: Width,
+              height: Height,
+              padding: padding,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(radius),
+                  border: Border.all(width: borderWidth, color: borderColor),
+                  color: backgroundColor),
+              child: Center(child: widget)),
+        );
       default:
         return Container();
     }

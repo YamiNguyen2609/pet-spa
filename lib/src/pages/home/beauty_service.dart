@@ -17,7 +17,8 @@ import '../../theme/Metrics.dart';
 import '../data/data.dart';
 
 class BeautyService extends StatefulWidget {
-  const BeautyService({super.key});
+  final Function onPress;
+  const BeautyService({super.key, required this.onPress});
 
   @override
   State<BeautyService> createState() => _BeautyServiceState();
@@ -25,17 +26,27 @@ class BeautyService extends StatefulWidget {
 
 class _BeautyServiceState extends State<BeautyService> {
   int state = 0;
+  bool disabledTab = false;
   List<int> selected_options = List.empty(growable: true);
   CarouselController carouselController = CarouselController();
 
   void onPressTab(int _state) {
-    setState(() {
-      state = _state;
-      selected_options.clear();
-      carouselController.animateToPage(_state,
-          duration: const Duration(milliseconds: 800),
-          curve: Curves.fastOutSlowIn);
-    });
+    int time = 400;
+    if (!disabledTab) {
+      setState(() {
+        state = _state;
+        disabledTab = true;
+        selected_options.clear();
+        carouselController.animateToPage(_state,
+            duration: Duration(milliseconds: time),
+            curve: Curves.fastOutSlowIn);
+        Timer(
+            Duration(milliseconds: time),
+            () => setState(() {
+                  disabledTab = false;
+                }));
+      });
+    }
   }
 
   void setSelectedItem(int id) {
@@ -50,8 +61,6 @@ class _BeautyServiceState extends State<BeautyService> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width / 3;
-    double _height = 47;
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -61,49 +70,34 @@ class _BeautyServiceState extends State<BeautyService> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(
                   combos.length,
-                  (index) => Container(
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: state == index ? 3 : 2,
-                                  color: state == index
-                                      ? color_primary
-                                      : Colors.black12))),
-                      child: AppButton(
-                          type: ButtonType.TextButton,
-                          size: text_size_sub,
-                          text: combos[index].name,
-                          backgroundColor: Colors.transparent,
-                          textColor:
-                              state == index ? color_primary : Colors.black54,
-                          width: width,
-                          height: _height,
-                          onPress: () {
-                            onPressTab(index);
-                          })))),
+                  (index) => tabItem(
+                        combos[index],
+                        state == index,
+                        onPress: () => onPressTab(index),
+                      ))),
           CarouselSlider(
             carouselController: carouselController,
             options: CarouselOptions(
               enableInfiniteScroll: false,
               height: Utils.height(context) -
-                  _height -
-                  60 -
-                  3 -
-                  120 -
+                  50 -
+                  150 -
                   status_bar_height -
-                  padding_bottom,
+                  padding_large.top,
               initialPage: 0,
               autoPlay: false,
               enlargeCenterPage: false,
               viewportFraction: 1,
               scrollDirection: Axis.horizontal,
               onPageChanged: (index, reason) {
-                Timer(
-                    const Duration(milliseconds: 500),
-                    () => setState(() {
-                          state = index;
-                          selected_options.clear();
-                        }));
+                if (state - index == 0 || reason.name == "manual") {
+                  Timer(
+                      const Duration(milliseconds: 200),
+                      () => setState(() {
+                            state = index;
+                            selected_options.clear();
+                          }));
+                }
               },
             ),
             items: combos
@@ -114,8 +108,41 @@ class _BeautyServiceState extends State<BeautyService> {
                     ))
                 .toList(),
           ),
-          const Bugdet(1200000)
+          Bugdet(combos[state].cost, onSubmit: () {
+            widget.onPress(combos[state].id, selected_options);
+          })
         ]);
+  }
+}
+
+class tabItem extends StatelessWidget {
+  final PetServiceComboModel item;
+  final bool active;
+  final Function onPress;
+  const tabItem(this.item, this.active, {super.key, required this.onPress});
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width / 3;
+    double height = 50;
+    return GestureDetector(
+      onTap: () => onPress(),
+      child: Container(
+        alignment: Alignment.center,
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+                bottom: BorderSide(
+                    width: 3, color: active ? color_primary : Colors.white))),
+        child: AppText(
+          item.name,
+          size: text_size_sub,
+          color: active ? color_primary : Colors.black45,
+        ),
+      ),
+    );
   }
 }
 
@@ -131,11 +158,12 @@ class Item extends StatelessWidget {
     for (var i = 0; i < data.length; i += 2) {
       List<Widget> children = [
         Expanded(
-            child: Row(children: [
+            child:
+                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           const Icon(
-            Icons.circle,
+            Icons.star,
             color: color_primary,
-            size: 6,
+            size: 15,
           ),
           Flexible(
               child: AppSubTitleText(
@@ -148,9 +176,9 @@ class Item extends StatelessWidget {
         children.add(Expanded(
             child: Row(children: [
           const Icon(
-            Icons.circle,
+            Icons.star,
             color: color_primary,
-            size: 6,
+            size: 15,
           ),
           Flexible(
               child: AppSubTitleText(
@@ -181,6 +209,7 @@ class Item extends StatelessWidget {
                     top: padding_small.top,
                     bottom: padding_tiny.bottom),
                 decoration: BoxDecoration(
+                    color: Colors.white,
                     border: Border.all(width: 1, color: Colors.black12),
                     borderRadius: const BorderRadius.all(radius_small)),
                 child: Column(
@@ -197,9 +226,13 @@ class Item extends StatelessWidget {
             Container(
                 width: MediaQuery.of(context).size.width,
                 padding: padding_small,
-                margin: EdgeInsets.symmetric(
-                    horizontal: padding_small.left, vertical: padding_tiny.top),
+                margin: EdgeInsets.only(
+                    left: padding_small.left,
+                    right: padding_small.left,
+                    top: padding_tiny.top,
+                    bottom: padding_regular.bottom),
                 decoration: BoxDecoration(
+                    color: Colors.white,
                     border: Border.all(width: 1, color: Colors.black12),
                     borderRadius: const BorderRadius.all(radius_small)),
                 child: Column(
@@ -246,45 +279,45 @@ class Item extends StatelessWidget {
 
 class Bugdet extends StatelessWidget {
   final double value;
-  const Bugdet(this.value, {super.key});
+  final Function onSubmit;
+  const Bugdet(this.value, {super.key, required this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-          left: padding_regular.left,
-          right: padding_regular.right,
-          bottom: padding_bottom),
-      decoration: const BoxDecoration(
-          border: Border(top: BorderSide(width: 2, color: Colors.black12))),
-      child: Column(children: [
-        Container(
-            alignment: Alignment.centerLeft,
-            height: 60,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppHeading2Text(
-                  'Tổng tiền',
-                  color: Colors.black54,
-                ),
-                AppHeading1Text(
-                  Utils.FormatCurrency(value),
-                  color: color_red,
-                )
-              ],
-            )),
-        AppButton(
-          type: ButtonType.TextButton,
-          width: Utils.width(context),
-          height: 50,
-          backgroundColor: color_primary,
-          radius: radius_small,
-          text: 'Sử dụng',
-          onPress: () {},
-        )
-      ]),
-    );
+        height: 100,
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: padding_regular.left),
+        alignment: Alignment.centerLeft,
+        child: Column(children: [
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: padding_tiny.top),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const AppText(
+                    'Tổng cộng',
+                    size: text_size_sub,
+                    color: Colors.black54,
+                  ),
+                  AppText(
+                    Utils.FormatCurrency(value),
+                    size: text_size_heading_2,
+                    color: color_red,
+                  ),
+                ],
+              )),
+          AppButton(
+            type: ButtonType.TextButton,
+            width: Utils.width(context),
+            height: 40,
+            size: text_size_medium,
+            backgroundColor: color_primary,
+            radius: radius_tiny,
+            text: 'Sử dụng',
+            onPress: () => onSubmit(),
+          )
+        ]));
   }
 }
