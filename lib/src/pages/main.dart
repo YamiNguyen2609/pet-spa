@@ -66,9 +66,10 @@ class Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Radius radius = Radius.circular(40);
-    double width = 60;
-    double height = 60;
+    double size = 40;
+    Radius radius = Radius.circular(size);
+    double width = 140;
+    double height = 70;
     return Container(
       height: height,
       color: background_color,
@@ -101,37 +102,39 @@ class Navigation extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 SizedBox(
-                    width: 100 + width,
-                    height: height / 2,
+                    width: width,
+                    height: height / 2 + padding_small.bottom,
                     child: ColoredBox(color: background_color_secondary)),
-                Padding(
-                    padding: EdgeInsets.only(bottom: padding_small.bottom),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.vertical(bottom: radius),
-                        child: SizedBox(
-                          width: width + 20,
-                          height: height,
-                          child: ColoredBox(color: background_color),
-                        ))),
+                Positioned(
+                  bottom: padding_regular.bottom + 3,
+                  child: Container(
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.all(radius),
+                          child: const SizedBox(
+                            width: 68,
+                            height: 68,
+                            child: ColoredBox(color: background_color),
+                          ))),
+                ),
                 SizedBox(
-                  width: 100 + width,
+                  width: width,
                   height: height,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ClipRRect(
-                          borderRadius: BorderRadius.only(topRight: radius),
+                          borderRadius: BorderRadius.horizontal(right: radius),
                           child: SizedBox(
-                            width: 50,
+                            width: size,
                             height: height,
                             child:
                                 ColoredBox(color: background_color_secondary),
                           )),
                       ClipRRect(
-                          borderRadius: BorderRadius.only(topLeft: radius),
+                          borderRadius: BorderRadius.horizontal(left: radius),
                           child: SizedBox(
-                            width: 50,
+                            width: size,
                             height: height,
                             child:
                                 ColoredBox(color: background_color_secondary),
