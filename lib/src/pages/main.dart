@@ -41,7 +41,7 @@ class _MainState extends State<Main> {
           child: Container(
             width: 60,
             height: 60,
-            margin: EdgeInsets.only(top: padding_small.top),
+            margin: EdgeInsets.only(left: 0.5),
             decoration: const BoxDecoration(
                 color: background_color_secondary,
                 borderRadius: BorderRadius.all(Radius.circular(40))),
@@ -106,13 +106,13 @@ class Navigation extends StatelessWidget {
                     height: height / 2 + padding_small.bottom,
                     child: ColoredBox(color: background_color_secondary)),
                 Positioned(
-                  bottom: padding_regular.bottom + 3,
+                  bottom: padding_large.bottom,
                   child: Container(
                       child: ClipRRect(
                           borderRadius: BorderRadius.all(radius),
                           child: const SizedBox(
-                            width: 68,
-                            height: 68,
+                            width: 76,
+                            height: 76,
                             child: ColoredBox(color: background_color),
                           ))),
                 ),
