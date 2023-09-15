@@ -17,10 +17,10 @@ class AppCheckbox extends StatelessWidget {
     this.title,
     this.value, {
     super.key,
-    this.textSize = 14,
+    this.textSize = text_size_label,
     required this.onPress,
     this.textColor = Colors.black87,
-    this.size = 20,
+    this.size = icon_regular,
     this.border = 2,
     this.borderColor = Colors.black26,
     this.radius = radius_tiny,

@@ -33,14 +33,7 @@ class Calendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double Width = width > 0 ? width : Utils.width(context);
-    double Height = height > 0 ? height : 350;
-    InputBorder inputBorder = UnderlineInputBorder(
-        borderSide: BorderSide(color: borderColor, width: 2));
-    if (border > 0) {
-      inputBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.all(radius),
-          borderSide: BorderSide(color: borderColor, width: border));
-    }
+    double Height = height > 0 ? height : 300;
     return Container(
       width: Width,
       height: Height,
@@ -48,6 +41,7 @@ class Calendar extends StatelessWidget {
       padding: padding,
       child: CalendarDatePicker2(
           value: [value],
+          onValueChanged: (value) => callback(value),
           config: CalendarDatePicker2Config(
               selectedDayHighlightColor: color_primary)),
     );

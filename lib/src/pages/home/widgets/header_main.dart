@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../theme/Color.dart';
-import '../../theme/Metrics.dart';
-import '../../widgets/button.dart';
-import '../../widgets/text.dart';
+import '../../../theme/Color.dart';
+import '../../../theme/Metrics.dart';
+import '../../../widgets/text.dart';
 
 class HeaderMain extends StatelessWidget {
   const HeaderMain({super.key});

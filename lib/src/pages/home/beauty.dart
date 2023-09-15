@@ -1,21 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pet_spa/src/pages/home/beauty_service.dart';
-import 'package:pet_spa/src/pages/home/header.dart';
-import 'package:pet_spa/src/pages/home/time_service.dart';
+import 'package:pet_spa/src/models/combo_service_model.dart';
+import 'package:pet_spa/src/models/option_service_model.dart';
+import 'package:pet_spa/src/pages/widgets/header.dart';
+import 'package:pet_spa/src/pages/home/widgets/pet_container.dart';
+import 'package:pet_spa/src/pages/home/widgets/pickup_container.dart';
+import 'package:pet_spa/src/pages/home/widgets/service_container.dart';
+import 'package:pet_spa/src/pages/home/widgets/store_container.dart';
+import 'package:pet_spa/src/pages/home/widgets/time_service.dart';
+import 'package:pet_spa/src/pages/widgets/title.dart';
 import 'package:pet_spa/src/pages/pet/pet_model.dart';
+import 'package:pet_spa/src/pages/widgets/verify_confirm.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/widgets/button.dart';
-import 'package:pet_spa/src/widgets/input.dart';
 import 'package:pet_spa/src/widgets/listview.dart';
 import 'package:pet_spa/src/widgets/scrollview.dart';
-import 'package:pet_spa/src/widgets/text.dart';
 
+import '../../models/store_model.dart';
 import '../../ultis/utils.dart';
-import '../../widgets/Calendar.dart';
-import '../../widgets/checkbox.dart';
+import '../../widgets/card.dart';
+import '../../widgets/text.dart';
 import '../data/data.dart';
 
 const double component_height = 71;
@@ -28,8 +33,14 @@ class Beauty extends StatefulWidget {
 }
 
 class _BeautyState extends State<Beauty> {
-  int _selectedPet = 0;
-  int _selectedCombo = 0;
+  PetModel _selectedPet = pets[0];
+  DateTime _date = DateTime.now();
+  DateTime _time = DateTime.now();
+  List<OptionServiceModel> _selectedOptions = List.empty(growable: true);
+  double total_options_cost = 0;
+  ComboServiceModel _selectedCombo = combos[0];
+  StoreModel _selectedLocation = stores[0];
+  bool isPickupAtHome = true;
   void _setPet(item) {
     setState(() {
       _selectedPet = item;
@@ -37,10 +48,27 @@ class _BeautyState extends State<Beauty> {
     });
   }
 
-  void _setCombo(item, options) {
+  void _setCombo(ComboServiceModel item, List<int> options) {
     setState(() {
       _selectedCombo = item;
+      _selectedOptions = item.options
+          .where((element) => options.contains(element.id))
+          .toList();
+      total_options_cost = 0;
+      if (_selectedOptions.isNotEmpty)
+        total_options_cost = _selectedOptions
+            .map((e) => e.value)
+            .reduce((value, element) => value + element);
+
       Navigator.pop(context);
+    });
+  }
+
+  void _setDateTime(date, time) {
+    String x = "";
+    setState(() {
+      _date = date;
+      _time = time;
     });
   }
 
@@ -51,363 +79,146 @@ class _BeautyState extends State<Beauty> {
         body: Column(children: [
           const Header("Dịch vụ Spa"),
           AppScollview(children: [
-            Container(
-              padding: padding_small,
-              margin: padding_small,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(radius_small)),
-              child: Column(children: [
-                AppInput(
-                    textColor: color_primary,
-                    label: 'Chủ thú cưng',
-                    margin: EdgeInsets.only(bottom: padding_small.bottom),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: padding_tiny.left)),
-                AppInput(
-                    type: InputType.PhoneInput,
-                    textColor: color_primary,
-                    label: 'Số điện thoại',
-                    margin: EdgeInsets.only(bottom: padding_small.bottom),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: padding_tiny.left)),
-                TimeService(
-                  DateTime.now(),
-                  height: component_height,
-                  margin: EdgeInsets.only(bottom: padding_small.bottom),
+            const HeaderTitle('Thông tin'),
+            CardContainer(children: [
+              PetContainer(_selectedPet, onPress: _setPet),
+            ]),
+            const HeaderTitle('Hệ thống cửa hàng'),
+            CardContainer(
+              children: [
+                StoreContainer(_selectedLocation, onPress: () {}),
+                Divider(
+                  height: padding_large.top,
                 ),
-                ChoosePanel(
-                  'Thú cưng',
-                  _selectedPet > 0,
-                  _selectedPet > 0
-                      ? pets
-                          .firstWhere((element) => element.id == _selectedPet)
-                          .name
-                      : 'Chọn thú cưng',
-                  PetPanel(pets, _selectedPet, onPress: _setPet),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const AppText(
+                        'Tự đến cửa hàng',
+                        size: text_size_medium,
+                        weight: FontWeight.w500,
+                        color: Colors.black54,
+                      ),
+                      SizedBox(
+                          width: 45,
+                          height: 30,
+                          child: FittedBox(
+                              fit: BoxFit.fill,
+                              child: CupertinoSwitch(
+                                  value: isPickupAtHome,
+                                  activeColor: color_primary,
+                                  onChanged: (bool value) => setState(() {
+                                        isPickupAtHome = value;
+                                      }))))
+                    ]),
+                AnimatedContainer(
+                    width: Utils.width(context) - padding_small.left * 4,
+                    height: isPickupAtHome ? 0 : 44 + padding_tiny.top,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.fastOutSlowIn,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(top: padding_tiny.top),
+                    child: PickupContainer(_selectedLocation, onPress: () {})),
+                Divider(
+                  height: padding_large.top,
                 ),
-                ChoosePanel(
-                  'Gói dịch vụ',
-                  _selectedCombo > 0,
-                  _selectedCombo > 0
-                      ? combos
-                          .firstWhere((element) => element.id == _selectedCombo)
-                          .name
-                      : 'Chọn gói dịch vụ',
-                  ComboPanel(pets, _selectedPet, onPress: _setCombo),
+                TimeService(_date, _time, onChange: _setDateTime),
+              ],
+            ),
+            const HeaderTitle('Dịch vụ'),
+            CardContainer(children: [
+              ServiceContainer(
+                _selectedCombo,
+                onPress: _setCombo,
+              ),
+            ]),
+            _selectedOptions.isNotEmpty
+                ? Column(children: [
+                    SizedBox(
+                      height: padding_regular.top,
+                    ),
+                    CardContainer(
+                      children: List.generate(
+                          _selectedOptions.length,
+                          (index) => Container(
+                                alignment: Alignment.centerLeft,
+                                width: MediaQuery.of(context).size.width -
+                                    padding_regular.left * 2,
+                                padding: EdgeInsets.only(
+                                    top: padding_regular.top / 2,
+                                    bottom: padding_regular.top / 2),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AppLabelMediumText(
+                                        _selectedOptions[index].name,
+                                        color: Colors.black54,
+                                        weight: FontWeight.w500),
+                                    AppLabelMediumText(
+                                      Utils.FormatCurrency(
+                                          options[index].value),
+                                      color: color_red,
+                                    )
+                                  ],
+                                ),
+                              )),
+                    )
+                  ])
+                : const SizedBox(),
+            const HeaderTitle('Thanh toán'),
+            CardContainer(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                const AppLabelMediumText('Gói dịch vụ',
+                    color: Colors.black54, weight: FontWeight.w500),
+                AppLabelMediumText(
+                  Utils.FormatCurrency(_selectedCombo.cost),
+                  color: color_red,
                 )
               ]),
-            ),
+              Divider(
+                height: padding_large.top,
+              ),
+              _selectedOptions.isNotEmpty
+                  ? Column(children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const AppLabelMediumText('Dịch vụ tùy chọn',
+                                color: Colors.black54, weight: FontWeight.w500),
+                            AppLabelMediumText(
+                              Utils.FormatCurrency(total_options_cost),
+                              color: color_red,
+                            )
+                          ]),
+                      Divider(
+                        height: padding_large.top,
+                      )
+                    ])
+                  : SizedBox(),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                const AppLabelMediumText('Tổng cộng',
+                    color: Colors.black54, weight: FontWeight.w500),
+                AppLabelMediumText(
+                  Utils.FormatCurrency(
+                      _selectedCombo.cost + total_options_cost),
+                  color: color_red,
+                )
+              ]),
+            ]),
           ]),
+          AppButton(
+              type: ButtonType.TextButton,
+              text: 'Tiếp tục',
+              backgroundColor: color_primary,
+              margin: padding_regular,
+              height: 40,
+              radius: radius_large,
+              onPress: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => const VerifyConfirm())))
         ]));
-  }
-}
-
-class ChoosePanel extends StatelessWidget {
-  final String label;
-  final Widget widget;
-  final String value;
-  final bool isValue;
-  final EdgeInsets margin;
-  const ChoosePanel(this.label, this.isValue, this.value, this.widget,
-      {super.key, this.margin = EdgeInsets.zero});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: component_height,
-      margin: EdgeInsets.only(bottom: padding_small.bottom),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              label,
-              size: text_size_medium,
-              weight: FontWeight.w500,
-              color: Colors.black54,
-            ),
-            GestureDetector(
-              onTap: () => showModalBottomSheet(
-                  context: context,
-                  useSafeArea: true,
-                  isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(top: radius_small),
-                  ),
-                  builder: (BuildContext context) {
-                    return widget;
-                  }),
-              child: Container(
-                width:
-                    MediaQuery.of(context).size.width - padding_small.left * 2,
-                padding: EdgeInsets.only(
-                    top: padding_tiny.top,
-                    bottom: padding_tiny.bottom,
-                    right: padding_tiny.right),
-                // margin: EdgeInsets.only(bottom: padding_small.bottom),
-                decoration: const BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 2, color: Colors.black26))),
-                child: AppText(
-                  value,
-                  color: isValue ? color_primary : Colors.black26,
-                  weight: FontWeight.w500,
-                  size: 16,
-                ),
-              ),
-            )
-          ]),
-    );
-  }
-}
-
-class ChooseCenterPanel extends StatelessWidget {
-  final String label;
-  final Widget widget;
-  final String value;
-  final bool isValue;
-  final EdgeInsets margin;
-  const ChooseCenterPanel(this.label, this.isValue, this.value, this.widget,
-      {super.key, this.margin = EdgeInsets.zero});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: component_height,
-      margin: EdgeInsets.only(bottom: padding_small.bottom),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              label,
-              size: text_size_medium,
-              weight: FontWeight.w500,
-              color: Colors.black54,
-            ),
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    useSafeArea: false,
-                    isScrollControlled: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: radius_regular),
-                    ),
-                    builder: (BuildContext context) {
-                      return widget;
-                    });
-              },
-              child: Container(
-                width:
-                    MediaQuery.of(context).size.width - padding_small.left * 2,
-                padding: EdgeInsets.only(
-                    top: padding_tiny.top,
-                    bottom: padding_tiny.bottom,
-                    right: padding_tiny.right),
-                // margin: EdgeInsets.only(bottom: padding_small.bottom),
-                decoration: const BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 2, color: Colors.black26))),
-                child: AppText(
-                  value,
-                  color: isValue ? color_primary : Colors.black26,
-                  weight: FontWeight.w500,
-                  size: 16,
-                ),
-              ),
-            )
-          ]),
-    );
-  }
-}
-
-class PetPanel extends StatelessWidget {
-  final List<PetModel> items;
-  final int value;
-  final Function onPress;
-  const PetPanel(this.items, this.value, {super.key, required this.onPress});
-
-  @override
-  Widget build(BuildContext context) {
-    const double item_size = 70;
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: item_size * items.length + 55 <=
-                MediaQuery.of(context).size.height / 3
-            ? item_size * items.length + 55
-            : MediaQuery.of(context).size.height / 3,
-        child: Column(
-          children: [
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Icon(
-                      null,
-                      color: Colors.black54,
-                      size: 25,
-                    ),
-                    const AppHeading1Text(
-                      'Thú cưng của bạn',
-                      color: Colors.black54,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.close_rounded,
-                          color: Colors.black54,
-                          size: 25,
-                        )),
-                  ]),
-            ),
-            AppListView(
-                data: items,
-                height: item_size * items.length,
-                child: (context, item, index) => GestureDetector(
-                      onTap: () => onPress(item.id),
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: padding_regular.left),
-                          height: item_size,
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(
-                                      right: padding_tiny.right),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(radius_large),
-                                  ),
-                                  child: ClipRRect(
-                                      borderRadius:
-                                          const BorderRadius.all(radius_large),
-                                      child: Image.asset('assets/avatar.png',
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.cover))),
-                              Expanded(
-                                  child: SizedBox(
-                                      height: item_size - padding_small.top,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                AppHeading2Text(
-                                                  item.name,
-                                                  weight: FontWeight.bold,
-                                                ),
-                                                AppSubTitleText(
-                                                  Utils.CalculateAge(
-                                                      DateTime.parse(
-                                                          item.birthday)),
-                                                  weight: FontWeight.w500,
-                                                )
-                                              ]),
-                                          Container(
-                                              width: 20,
-                                              height: 20,
-                                              padding: const EdgeInsets.all(2),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          radius_regular),
-                                                  border: Border.all(
-                                                      width: 2,
-                                                      color: value == item.id
-                                                          ? color_primary
-                                                          : Colors.black26)),
-                                              child: Container(
-                                                  width: 5,
-                                                  height: 5,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                                  .all(
-                                                              radius_regular),
-                                                      color: value == item.id
-                                                          ? color_primary
-                                                          : Colors.black26)))
-                                        ],
-                                      )))
-                            ],
-                          )),
-                    ))
-          ],
-        ));
-  }
-}
-
-class ComboPanel extends StatelessWidget {
-  final List<PetModel> items;
-  final int value;
-  final Function onPress;
-  const ComboPanel(this.items, this.value, {super.key, required this.onPress});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-            color: background_color,
-            borderRadius: BorderRadius.vertical(top: radius_medium)),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height -
-            status_bar_height -
-            padding_large.top,
-        child: Column(
-          children: [
-            Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: radius_medium)),
-              child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Icon(
-                      null,
-                      color: Colors.black54,
-                      size: 25,
-                    ),
-                    const AppHeading1Text(
-                      'Gói dịch vụ',
-                      color: Colors.black54,
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.close_rounded,
-                          color: Colors.black54,
-                          size: 25,
-                        )),
-                  ]),
-            ),
-            BeautyService(onPress: onPress)
-          ],
-        ));
   }
 }

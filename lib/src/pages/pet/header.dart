@@ -14,17 +14,18 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     const double iconSize = 25;
     return Container(
-        height: 70,
-        padding: EdgeInsets.symmetric(
-            horizontal: padding_small.left, vertical: padding_regular.top),
+        height: height_header,
+        padding: EdgeInsets.only(
+            left: padding_small.left,
+            right: padding_small.left,
+            top: status_bar_height + padding_regular.top,
+            bottom: padding_regular.top),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: const Icon(
                     Icons.arrow_back_ios_new_rounded,
                     color: color_primary,

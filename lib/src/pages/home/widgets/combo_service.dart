@@ -2,30 +2,29 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pet_spa/src/pages/home/pet_service_combo_model.dart';
-import 'package:pet_spa/src/pages/home/pet_service_option_model.dart';
+import 'package:pet_spa/src/models/combo_service_model.dart';
+import 'package:pet_spa/src/pages/widgets/title.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/button.dart';
 import 'package:pet_spa/src/widgets/checkbox.dart';
-import 'package:pet_spa/src/widgets/listview.dart';
 import 'package:pet_spa/src/widgets/scrollview.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
-import '../../theme/Color.dart';
-import '../../theme/Metrics.dart';
-import '../data/data.dart';
+import '../../../theme/Color.dart';
+import '../../../theme/Metrics.dart';
+import '../../data/data.dart';
 
-class BeautyService extends StatefulWidget {
+class ComboService extends StatefulWidget {
   final Function onPress;
-  const BeautyService({super.key, required this.onPress});
+  const ComboService({super.key, required this.onPress});
 
   @override
-  State<BeautyService> createState() => _BeautyServiceState();
+  State<ComboService> createState() => _ComboServiceState();
 }
 
-class _BeautyServiceState extends State<BeautyService> {
+class _ComboServiceState extends State<ComboService> {
   int state = 0;
+  double total_options = 0;
   bool disabledTab = false;
   List<int> selected_options = List.empty(growable: true);
   CarouselController carouselController = CarouselController();
@@ -37,6 +36,7 @@ class _BeautyServiceState extends State<BeautyService> {
         state = _state;
         disabledTab = true;
         selected_options.clear();
+        total_options = 0;
         carouselController.animateToPage(_state,
             duration: Duration(milliseconds: time),
             curve: Curves.fastOutSlowIn);
@@ -55,6 +55,15 @@ class _BeautyServiceState extends State<BeautyService> {
         selected_options.remove(id);
       } else {
         selected_options.add(id);
+      }
+      if (selected_options.isNotEmpty) {
+        total_options = combos[state]
+            .options
+            .where((element) => selected_options.contains(element.id))
+            .map((e) => e.value)
+            .reduce((value, element) => value + element);
+      } else {
+        total_options = 0;
       }
     });
   }
@@ -95,6 +104,7 @@ class _BeautyServiceState extends State<BeautyService> {
                       const Duration(milliseconds: 200),
                       () => setState(() {
                             state = index;
+                            total_options = 0;
                             selected_options.clear();
                           }));
                 }
@@ -108,15 +118,15 @@ class _BeautyServiceState extends State<BeautyService> {
                     ))
                 .toList(),
           ),
-          Bugdet(combos[state].cost, onSubmit: () {
-            widget.onPress(combos[state].id, selected_options);
+          Bugdet(combos[state].cost + total_options, onSubmit: () {
+            widget.onPress(combos[state], selected_options);
           })
         ]);
   }
 }
 
 class tabItem extends StatelessWidget {
-  final PetServiceComboModel item;
+  final ComboServiceModel item;
   final bool active;
   final Function onPress;
   const tabItem(this.item, this.active, {super.key, required this.onPress});
@@ -147,7 +157,7 @@ class tabItem extends StatelessWidget {
 }
 
 class Item extends StatelessWidget {
-  final PetServiceComboModel item;
+  final ComboServiceModel item;
   final List<int> selectedOptions;
   final Function onSelectOption;
   const Item(this.item, this.selectedOptions,
@@ -158,38 +168,33 @@ class Item extends StatelessWidget {
     for (var i = 0; i < data.length; i += 2) {
       List<Widget> children = [
         Expanded(
-            child:
-                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          const Icon(
-            Icons.star,
-            color: color_primary,
-            size: 15,
-          ),
-          Flexible(
-              child: AppSubTitleText(
-            data[i],
-            margin: EdgeInsets.only(left: padding_tiny.left),
-          ))
-        ]))
+            child: Container(
+                padding: EdgeInsets.only(
+                    top: i == 0 ? padding_tiny.top : padding_tiny.top / 2,
+                    bottom: i == data.length - 2
+                        ? padding_tiny.top
+                        : padding_tiny.top / 2),
+                alignment: Alignment.centerLeft,
+                child: AppText(
+                  data[i],
+                  size: text_size_medium,
+                )))
       ];
       if (i + 1 < data.length) {
         children.add(Expanded(
-            child: Row(children: [
-          const Icon(
-            Icons.star,
-            color: color_primary,
-            size: 15,
-          ),
-          Flexible(
-              child: AppSubTitleText(
-            data[i + 1],
-            margin: EdgeInsets.only(left: padding_tiny.left),
-          ))
-        ])));
+            child: Container(
+                padding: EdgeInsets.only(
+                    top: i == 0 ? padding_tiny.top : padding_tiny.top / 2,
+                    bottom: i == data.length - 2
+                        ? padding_tiny.top
+                        : padding_tiny.top / 2),
+                alignment: Alignment.centerLeft,
+                child: AppText(
+                  data[i + 1],
+                  size: text_size_medium,
+                ))));
       }
-      widgets.add(Padding(
-          padding: EdgeInsets.only(top: padding_tiny.top),
-          child: Row(children: children)));
+      widgets.add(Row(children: children));
     }
     return widgets;
   }
@@ -200,14 +205,11 @@ class Item extends StatelessWidget {
       children: [
         AppScollview(
           children: [
+            const HeaderTitle('Dịch vụ trong gói'),
             Container(
                 width: MediaQuery.of(context).size.width,
-                padding: padding_small,
-                margin: EdgeInsets.only(
-                    left: padding_small.left,
-                    right: padding_small.left,
-                    top: padding_small.top,
-                    bottom: padding_tiny.bottom),
+                padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
+                margin: EdgeInsets.symmetric(horizontal: padding_small.left),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(width: 1, color: Colors.black12),
@@ -215,41 +217,36 @@ class Item extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const AppSubTitleText(
-                      'Dịch vụ trong gói',
-                      color: Colors.black54,
-                    ),
-                    ...renderWidget(item.items)
-                  ],
+                  children: renderWidget(item.items),
                 )),
+            const HeaderTitle('Dịch vụ thêm'),
             Container(
                 width: MediaQuery.of(context).size.width,
-                padding: padding_small,
+                padding: EdgeInsets.symmetric(horizontal: padding_tiny.left),
                 margin: EdgeInsets.only(
                     left: padding_small.left,
                     right: padding_small.left,
-                    top: padding_tiny.top,
                     bottom: padding_regular.bottom),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(width: 1, color: Colors.black12),
                     borderRadius: const BorderRadius.all(radius_small)),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const AppSubTitleText(
-                      'Dịch vụ thêm',
-                      color: Colors.black54,
-                    ),
-                    ...List.generate(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: List.generate(
                         options.length,
                         (index) => Container(
                               alignment: Alignment.centerLeft,
                               width: MediaQuery.of(context).size.width -
                                   padding_regular.left * 2,
-                              height: 50,
+                              padding: EdgeInsets.only(
+                                  top: index == 0
+                                      ? padding_regular.top
+                                      : padding_regular.top / 2,
+                                  bottom: index == options.length - 1
+                                      ? padding_regular.top
+                                      : padding_regular.top / 2),
                               child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment:
@@ -260,16 +257,15 @@ class Item extends StatelessWidget {
                                       selectedOptions
                                           .contains(options[index].id),
                                       size: 20,
-                                      textSize: text_size_sub,
+                                      radius: radius_large,
+                                      textSize: text_size_medium,
                                       onPress: () =>
                                           onSelectOption(options[index].id),
                                     ),
                                     AppLabelMediumText(Utils.FormatCurrency(
                                         options[index].value))
                                   ]),
-                            ))
-                  ],
-                ))
+                            ))))
           ],
         ),
       ],

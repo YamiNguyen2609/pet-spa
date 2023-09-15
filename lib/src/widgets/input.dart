@@ -6,7 +6,8 @@ import '../ultis/utils.dart';
 
 enum InputType { TextInput, PasswordInput, NumberInput, PhoneInput }
 
-class AppInput extends StatelessWidget {
+class AppInput extends StatefulWidget {
+  final String value;
   final InputType? type;
   final String label;
   final double width;
@@ -28,6 +29,7 @@ class AppInput extends StatelessWidget {
       {super.key,
       this.width = 0,
       this.height = 0,
+      this.value = '',
       this.type = InputType.TextInput,
       this.textColor = Colors.black54,
       this.label = '',
@@ -38,61 +40,81 @@ class AppInput extends StatelessWidget {
       this.radius = radius_tiny,
       this.backgroundColor = Colors.transparent,
       this.border = 0,
-      this.borderColor = Colors.black26,
+      this.borderColor = Colors.black12,
       this.margin = EdgeInsets.zero,
       this.padding = EdgeInsets.zero,
       this.contentPadding = EdgeInsets.zero});
 
   @override
+  State<AppInput> createState() => _AppInputState();
+}
+
+class _AppInputState extends State<AppInput> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    if (widget.value != '') {
+      _controller.text = widget.value;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double Width = width > 0 ? width : Utils.width(context);
-    double Height = height > 0 ? height : height_default;
+    double Width = widget.width > 0 ? widget.width : Utils.width(context);
+    double Height = widget.height > 0 ? widget.height : height_default;
     TextInputType keyboardType = TextInputType.text;
-    if (type == InputType.NumberInput) {
+    if (widget.type == InputType.NumberInput) {
       keyboardType = TextInputType.number;
-    } else if (type == InputType.PhoneInput) {
+    } else if (widget.type == InputType.PhoneInput) {
       keyboardType = TextInputType.phone;
     }
     InputBorder inputBorder = UnderlineInputBorder(
-        borderSide: BorderSide(color: borderColor, width: 2));
-    if (border > 0) {
+        borderSide: BorderSide(color: widget.borderColor, width: 1));
+    if (widget.border > 0) {
       inputBorder = OutlineInputBorder(
-          borderRadius: BorderRadius.all(radius),
-          borderSide: BorderSide(color: borderColor, width: border));
+          borderRadius: BorderRadius.all(widget.radius),
+          borderSide:
+              BorderSide(color: widget.borderColor, width: widget.border));
     }
 
     return Container(
       width: Width,
       height: Height,
-      margin: margin,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              label,
-              size: text_size_medium,
-              weight: FontWeight.w500,
-              color: Colors.black54,
-            ),
-            TextField(
-              keyboardType: keyboardType,
-              decoration: InputDecoration(
-                  prefixIcon: icon,
-                  prefixIconColor: iconColor,
-                  filled: true,
-                  fillColor: backgroundColor,
-                  contentPadding: contentPadding,
-                  focusedBorder: inputBorder,
-                  border: inputBorder,
-                  enabledBorder: inputBorder,
-                  hintText: placeholder == ''
-                      ? 'Vui lòng nhập ${label.toLowerCase()}'
-                      : placeholder,
-                  hintStyle: TextStyle(color: placeholderColor)),
-              style: TextStyle(color: textColor, fontWeight: FontWeight.w500),
-            )
-          ]),
+      margin: widget.margin,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        widget.label != ''
+            ? Flexible(
+                child: AppText(
+                widget.label,
+                size: text_size_medium,
+                weight: FontWeight.w500,
+                color: Colors.black54,
+              ))
+            : const SizedBox(),
+        TextField(
+          controller: _controller,
+          keyboardType: keyboardType,
+          decoration: InputDecoration(
+              prefixIcon: widget.icon,
+              prefixIconColor: widget.iconColor,
+              filled: true,
+              isDense: true,
+              fillColor: widget.backgroundColor,
+              contentPadding: widget.contentPadding,
+              focusedBorder: inputBorder,
+              border: inputBorder,
+              enabledBorder: inputBorder,
+              hintText: widget.placeholder == ''
+                  ? 'Vui lòng nhập ${widget.label.toLowerCase()}'
+                  : widget.placeholder,
+              hintStyle: TextStyle(color: widget.placeholderColor)),
+          style:
+              TextStyle(color: widget.textColor, fontWeight: FontWeight.w500),
+        )
+      ]),
     );
   }
 }

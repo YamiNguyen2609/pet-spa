@@ -3,7 +3,7 @@ import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 
 class AppText extends StatelessWidget {
-  final String text;
+  final String? text;
   final double size;
   final Color color;
   final EdgeInsets margin;
@@ -21,11 +21,13 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String value = '';
+    if (text != null) value = text!;
     return Container(
       margin: margin,
       child: SelectionContainer.disabled(
           child: Text(
-        text,
+        value,
         overflow: overflow,
         maxLines: line,
         softWrap: true,

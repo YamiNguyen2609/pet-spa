@@ -5,6 +5,7 @@ import 'package:pet_spa/src/pages/home/beauty.dart';
 import 'package:pet_spa/src/pages/launcher.dart';
 import 'package:pet_spa/src/pages/login.dart';
 import 'package:pet_spa/src/pages/main.dart';
+import 'package:pet_spa/src/pages/widgets/verify_confirm.dart';
 
 class RootContainer extends StatefulWidget {
   const RootContainer({super.key});

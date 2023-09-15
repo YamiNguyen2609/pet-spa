@@ -1,3 +1,5 @@
+enum PetType { cat, dog }
+
 class PetModel {
   int id;
   String name;
@@ -6,6 +8,7 @@ class PetModel {
   String breed;
   String color;
   bool isFavorite;
-  PetModel(this.id, this.name, this.gender, this.birthday, this.breed,
-      this.color, this.isFavorite);
+  PetType type;
+  PetModel(this.id, this.name, this.type, this.gender, this.birthday,
+      this.breed, this.color, this.isFavorite);
 }

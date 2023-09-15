@@ -10,98 +10,56 @@ import 'package:pet_spa/src/widgets/text.dart';
 class PetItem extends StatelessWidget {
   final PetModel item;
   final int index;
-  final Function onPress;
-  const PetItem(this.item, this.index, {super.key, required this.onPress});
+  final int length;
+  const PetItem(this.item, this.index, this.length, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = false;
-
     return GestureDetector(
         onTap: () => Navigator.push(
             context, CupertinoPageRoute(builder: (context) => PetDetail(item))),
         child: Container(
-          padding: padding_tiny,
-          margin: EdgeInsets.symmetric(
-              horizontal: padding_small.left, vertical: padding_tiny.top),
-          decoration: BoxDecoration(
-              border: Border.all(width: 3, color: color_secondary_2),
-              borderRadius: const BorderRadius.all(radius_tiny)),
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    margin: EdgeInsets.only(right: padding_small.right),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(radius_tiny),
-                    ),
-                    child: Image.asset(
-                      'assets/launcher.png',
-                      width: 160,
-                      height: 100,
-                    )),
-                Expanded(
-                    child: SizedBox(
-                  height: 100,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppSubTitleText(item.name),
-                      Row(
-                        children: [
-                          const SizedBox(
-                            height: 70,
-                            width: 50,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                AppLabelText(
-                                  "Age",
-                                  color: background_color,
-                                ),
-                                AppLabelText("Gender", color: background_color),
-                                AppLabelText("Color", color: background_color),
-                                AppLabelText("Breed", color: background_color),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                              height: 70,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  AppLabelText(Utils.CalculateAge(
-                                      DateTime.parse(item.birthday))),
-                                  AppLabelText(item.gender ? 'Female' : 'Male'),
-                                  AppLabelText(item.color),
-                                  AppLabelText(item.breed),
-                                ],
-                              ))
-                        ],
-                      )
-                    ],
-                  ),
-                )),
-                GestureDetector(
-                  onTap: () => onPress(item.id),
-                  child: Container(
-                      child: item.isFavorite
-                          ? const Icon(
-                              Icons.favorite,
-                              color: color_red,
-                            )
-                          : const Icon(
-                              Icons.favorite_border_rounded,
-                              color: color_secondary_2,
-                            )),
-                )
-              ]),
+          width: 200,
+          margin: EdgeInsets.only(
+            left: index == 0 ? padding_regular.left : padding_tiny.left,
+            right:
+                index == length - 1 ? padding_regular.left : padding_tiny.left,
+          ),
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(radius_small)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: radius_small),
+                child: Image.asset('assets/avatar.png'),
+              ),
+              Padding(
+                  padding: padding_tiny,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AppText(
+                          item.name,
+                          size: text_size_sub,
+                          color: Colors.black87,
+                        ),
+                        item.gender
+                            ? const Icon(
+                                Icons.female_rounded,
+                                color: color_pink,
+                                size: icon_regular,
+                              )
+                            : const Icon(
+                                Icons.male_rounded,
+                                color: color_primary,
+                                size: icon_regular,
+                              )
+                      ])),
+            ],
+          ),
         ));
   }
 }

@@ -57,10 +57,10 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     double Width = width > 0 ? width : Utils.width(context);
     double Height = height > 0 ? height : height_default;
-    EdgeInsets padding = margin;
+    EdgeInsets _padding = padding;
     if (marginHorizontal != EdgeInsets.zero ||
         marginVertical != EdgeInsets.zero) {
-      padding = EdgeInsets.symmetric(
+      _padding = EdgeInsets.symmetric(
           horizontal: marginHorizontal.top, vertical: marginVertical.left);
     }
     switch (type) {
@@ -68,21 +68,22 @@ class AppButton extends StatelessWidget {
         return GestureDetector(
           onTap: onPress,
           child: Container(
-              width: Width,
-              height: Height,
-              padding: padding,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(radius),
-                  border: Border.all(width: borderWidth, color: borderColor),
-                  color: backgroundColor),
-              child: Center(
-                child: AppText(
-                  text,
-                  color: textColor,
-                  size: size,
-                  weight: textWeight,
-                ),
-              )),
+            width: Width,
+            height: Height,
+            padding: _padding,
+            margin: margin,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(radius),
+                border: Border.all(width: borderWidth, color: borderColor),
+                color: backgroundColor),
+            child: AppText(
+              text,
+              color: textColor,
+              size: size,
+              weight: textWeight,
+            ),
+          ),
         );
       case ButtonType.IconButton:
         return GestureDetector(

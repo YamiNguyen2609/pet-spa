@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/widgets/text.dart';
@@ -13,8 +12,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     const double iconSize = 25;
     return Container(
-        color: Colors.white,
-        height: 70 + status_bar_height,
+        height: height_header,
         padding: EdgeInsets.only(
             left: padding_small.left,
             right: padding_small.left,

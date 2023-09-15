@@ -9,7 +9,7 @@ class SlideBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: padding_small.top),
+        padding: EdgeInsets.only(top: padding_regular.top),
         child: CarouselSlider(
           options: CarouselOptions(
             height: 180,
