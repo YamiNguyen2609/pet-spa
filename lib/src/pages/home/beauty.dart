@@ -213,7 +213,7 @@ class _BeautyState extends State<Beauty> {
               text: 'Tiếp tục',
               backgroundColor: color_primary,
               margin: padding_regular,
-              height: 40,
+              height: 50,
               radius: radius_large,
               onPress: () => Navigator.push(
                   context,

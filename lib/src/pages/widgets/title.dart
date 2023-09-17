@@ -8,7 +8,7 @@ class HeaderTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppSubTitleText(
+    return AppHeading2Text(
       title,
       color: Colors.black87,
       margin: padding_regular,

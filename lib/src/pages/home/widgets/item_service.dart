@@ -36,7 +36,7 @@ class ServiceItem extends StatelessWidget {
             AppText(
               title,
               margin: EdgeInsets.only(left: padding_small.top / 2),
-              size: text_size_medium,
+              size: text_size_sub,
               color: color_primary,
             ),
           ],

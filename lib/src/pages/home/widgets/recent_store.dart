@@ -28,7 +28,7 @@ class RecentStore extends StatelessWidget {
                 type: ButtonType.TextButton,
                 text: 'xem thêm',
                 textColor: color_secondary_1,
-                size: text_size_label,
+                size: text_size_medium,
                 width: 65,
                 height: 30,
                 margin: EdgeInsets.only(right: padding_regular.right),

@@ -47,7 +47,6 @@ class _TimeServiceState extends State<TimeService> {
   void _setDate(_date) {
     setState(() {
       date = _date[0];
-      expand = false;
       widget.onChange(date, time);
     });
   }

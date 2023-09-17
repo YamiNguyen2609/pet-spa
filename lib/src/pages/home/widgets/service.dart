@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/src/pages/home/beauty.dart';
 import 'package:pet_spa/src/pages/home/widgets/item_service.dart';
 import 'package:pet_spa/src/pages/widgets/title.dart';
-import 'package:pet_spa/src/widgets/text.dart';
 
 import '../../../theme/Metrics.dart';
 

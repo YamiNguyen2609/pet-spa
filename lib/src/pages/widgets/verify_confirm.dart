@@ -78,6 +78,15 @@ class _VerifyConfirmState extends State<VerifyConfirm> {
                 height: padding_large.top,
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                const AppLabelMediumText('Dịch vụ',
+                    color: Colors.black54, weight: FontWeight.w500),
+                AppText('Chăm sóc chải chuốt',
+                    size: text_size_medium, color: Colors.black87)
+              ]),
+              Divider(
+                height: padding_large.top,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 const AppLabelMediumText('Gói dịch vụ',
                     color: Colors.black54, weight: FontWeight.w500),
                 AppText(combos[0].name,
@@ -158,7 +167,7 @@ class _VerifyConfirmState extends State<VerifyConfirm> {
               text: 'Thanh toán',
               backgroundColor: color_primary,
               margin: padding_regular,
-              height: 40,
+              height: 50,
               radius: radius_large,
               onPress: () => Navigator.push(
                   context,
