@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_spa/src/pages/pet/pet_form.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
-import '../../theme/Metrics.dart';
+import '../../../theme/Metrics.dart';
 
 class Header extends StatelessWidget {
   final String title;
-  final Widget widget;
-  const Header(this.title, {super.key, required this.widget});
+  const Header(this.title, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,16 @@ class Header extends StatelessWidget {
                     size: iconSize,
                   )),
               AppHeading1Text(title, color: color_primary),
-              widget
+              GestureDetector(
+                  child: const Icon(
+                    Icons.add_rounded,
+                    color: color_primary,
+                    size: 28,
+                  ),
+                  onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const PetForm(null))))
             ]));
   }
 }

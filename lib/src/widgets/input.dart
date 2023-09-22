@@ -4,7 +4,13 @@ import 'package:pet_spa/src/widgets/text.dart';
 
 import '../ultis/utils.dart';
 
-enum InputType { TextInput, PasswordInput, NumberInput, PhoneInput }
+enum InputType {
+  TextInput,
+  PasswordInput,
+  NumberInput,
+  PhoneInput,
+  MultilineInput
+}
 
 class AppInput extends StatefulWidget {
   final String value;
@@ -24,6 +30,9 @@ class AppInput extends StatefulWidget {
   final EdgeInsets margin;
   final EdgeInsets padding;
   final EdgeInsets contentPadding;
+  final double borderUnderLine;
+  final int minLine;
+  final int? maxLine;
 
   const AppInput(
       {super.key,
@@ -40,10 +49,13 @@ class AppInput extends StatefulWidget {
       this.radius = radius_tiny,
       this.backgroundColor = Colors.transparent,
       this.border = 0,
+      this.borderUnderLine = 1,
       this.borderColor = Colors.black12,
       this.margin = EdgeInsets.zero,
       this.padding = EdgeInsets.zero,
-      this.contentPadding = EdgeInsets.zero});
+      this.contentPadding = EdgeInsets.zero,
+      this.minLine = 1,
+      this.maxLine});
 
   @override
   State<AppInput> createState() => _AppInputState();
@@ -64,15 +76,23 @@ class _AppInputState extends State<AppInput> {
   @override
   Widget build(BuildContext context) {
     double Width = widget.width > 0 ? widget.width : Utils.width(context);
-    double Height = widget.height > 0 ? widget.height : height_default;
+    double Height = widget.height > 0
+        ? widget.height
+        : widget.label != ""
+            ? height_default
+            : 44;
     TextInputType keyboardType = TextInputType.text;
     if (widget.type == InputType.NumberInput) {
       keyboardType = TextInputType.number;
     } else if (widget.type == InputType.PhoneInput) {
       keyboardType = TextInputType.phone;
+    } else if (widget.type == InputType.MultilineInput) {
+      keyboardType = TextInputType.multiline;
+      Height = Height * widget.minLine;
     }
     InputBorder inputBorder = UnderlineInputBorder(
-        borderSide: BorderSide(color: widget.borderColor, width: 1));
+        borderSide: BorderSide(
+            color: widget.borderColor, width: widget.borderUnderLine));
     if (widget.border > 0) {
       inputBorder = OutlineInputBorder(
           borderRadius: BorderRadius.all(widget.radius),
@@ -84,6 +104,7 @@ class _AppInputState extends State<AppInput> {
       width: Width,
       height: Height,
       margin: widget.margin,
+      alignment: Alignment.centerLeft,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         widget.label != ''
             ? Flexible(
@@ -92,11 +113,14 @@ class _AppInputState extends State<AppInput> {
                 size: text_size_medium,
                 weight: FontWeight.w500,
                 color: Colors.black54,
+                margin: EdgeInsets.only(bottom: padding_tiny.bottom / 2),
               ))
             : const SizedBox(),
         TextField(
           controller: _controller,
           keyboardType: keyboardType,
+          minLines: widget.minLine,
+          maxLines: widget.maxLine,
           decoration: InputDecoration(
               prefixIcon: widget.icon,
               prefixIconColor: widget.iconColor,
@@ -107,9 +131,8 @@ class _AppInputState extends State<AppInput> {
               focusedBorder: inputBorder,
               border: inputBorder,
               enabledBorder: inputBorder,
-              hintText: widget.placeholder == ''
-                  ? 'Vui lòng nhập ${widget.label.toLowerCase()}'
-                  : widget.placeholder,
+              hintText:
+                  widget.placeholder == '' ? widget.label : widget.placeholder,
               hintStyle: TextStyle(color: widget.placeholderColor)),
           style:
               TextStyle(color: widget.textColor, fontWeight: FontWeight.w500),

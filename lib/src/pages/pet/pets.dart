@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/pet/header.dart';
-import 'package:pet_spa/src/pages/pet/pet_detail.dart';
-import 'package:pet_spa/src/pages/pet/pet_item.dart';
-import 'package:pet_spa/src/pages/pet/pet_model.dart';
-import 'package:pet_spa/src/theme/Metrics.dart';
-import 'package:pet_spa/src/widgets/scrollview.dart';
-import 'package:pet_spa/src/widgets/text.dart';
+import '../../models/pet_model.dart';
 import '../../theme/Color.dart';
-import '../data/data.dart';
+import '../../data/data.dart';
+import '../../widgets/scrollview.dart';
 import '../widgets/title.dart';
+import 'pet_detail.dart';
+import 'widgets/header.dart';
+import 'widgets/pet_item.dart';
 
 class Pets extends StatefulWidget {
   const Pets({super.key});
@@ -28,26 +26,12 @@ class _PetsState extends State<Pets> {
 
   @override
   Widget build(BuildContext context) {
-    List<PetModel> cats =
-        pets.where((element) => element.type == PetType.cat).toList();
-    List<PetModel> dogs =
-        pets.where((element) => element.type == PetType.dog).toList();
+    List<PetModel> cats = pets;
+    List<PetModel> dogs = pets;
     return Scaffold(
         backgroundColor: background_color,
         body: Column(children: [
-          Header(
-            "Thú cưng của bạn",
-            widget: GestureDetector(
-                child: const Icon(
-                  Icons.add_rounded,
-                  color: color_primary,
-                  size: 28,
-                ),
-                onTap: () => Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => const PetDetail(null)))),
-          ),
+          const Header("Thú cưng của bạn"),
           AppScollview(children: [
             const HeaderTitle('Mèo cưng của bạn'),
             SizedBox(

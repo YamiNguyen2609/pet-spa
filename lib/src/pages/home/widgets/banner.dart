@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:pet_spa/src/theme/Color.dart';
-import 'package:pet_spa/src/theme/Metrics.dart';
+
+import '../../../theme/Color.dart';
+import '../../../theme/Metrics.dart';
 
 class SlideBanner extends StatelessWidget {
   const SlideBanner({super.key});
@@ -31,8 +32,7 @@ class SlideBanner extends StatelessWidget {
                         borderRadius: BorderRadius.all(radius_small)),
                     child: ClipRRect(
                         borderRadius: const BorderRadius.all(radius_small),
-                        child: Image.network(
-                            'https://images7.alphacoders.com/105/1051642.jpg',
+                        child: Image.asset('assets/banner.png',
                             fit: BoxFit.fill)));
               },
             );

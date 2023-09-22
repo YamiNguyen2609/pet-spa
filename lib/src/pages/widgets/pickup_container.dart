@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/models/store_model.dart';
 
-import '../../../theme/Color.dart';
-import '../../../theme/Metrics.dart';
-import '../../../widgets/text.dart';
+import '../../theme/Color.dart';
+import '../../theme/Metrics.dart';
+import '../../widgets/text.dart';
 
-class StoreContainer extends StatefulWidget {
+class PickupContainer extends StatefulWidget {
   final StoreModel model;
   final Function onPress;
-  const StoreContainer(this.model, {super.key, required this.onPress});
+  const PickupContainer(this.model, {super.key, required this.onPress});
 
   @override
-  State<StoreContainer> createState() => _StoreContainerState();
+  State<PickupContainer> createState() => _PickupContainerState();
 }
 
-class _StoreContainerState extends State<StoreContainer> {
+class _PickupContainerState extends State<PickupContainer> {
   @override
   Widget build(BuildContext context) {
     return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const AppText(
-            'Cửa hàng',
-            size: text_size_medium,
-            weight: FontWeight.w500,
-            color: Colors.black54,
-          ),
           GestureDetector(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              AppLabelMediumText(
+                widget.model.name,
+              ),
+              AppLabelText(
+                '${widget.model.address}, P.${widget.model.ward}, Q.${widget.model.district}, ${widget.model.city}',
+                color: color_secondary_1,
+                line: 1,
+                overflow: TextOverflow.ellipsis,
+              )
+            ]),
             onTap: () => showModalBottomSheet(
                 context: context,
                 useSafeArea: true,
@@ -83,12 +89,6 @@ class _StoreContainerState extends State<StoreContainer> {
                         ],
                       ));
                 }),
-            child: AppText(
-              widget.model.name,
-              color: color_primary,
-              weight: FontWeight.w500,
-              size: text_size_medium,
-            ),
           ),
         ]);
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/data/data.dart';
+import 'package:pet_spa/src/data/data.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/text.dart';

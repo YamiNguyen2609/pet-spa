@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/models/combo_service_model.dart';
-import 'package:pet_spa/src/pages/data/data.dart';
-import 'package:pet_spa/src/pages/home/widgets/combo_service.dart';
+import 'package:pet_spa/src/models/grooming_combo_model.dart';
+import 'package:pet_spa/src/data/data.dart';
+import 'package:pet_spa/src/pages/service/grooming/grooming_combo.dart';
 
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
 import '../../../ultis/utils.dart';
 import '../../../widgets/text.dart';
 
-class ServiceContainer extends StatefulWidget {
-  final ComboServiceModel model;
+class GroomingContainer extends StatefulWidget {
+  final GroomingComboModel model;
   final Function onPress;
-  const ServiceContainer(this.model, {super.key, required this.onPress});
+  const GroomingContainer(this.model, {super.key, required this.onPress});
 
   @override
-  State<ServiceContainer> createState() => _ServiceContainerState();
+  State<GroomingContainer> createState() => _GroomingContainerState();
 }
 
-class _ServiceContainerState extends State<ServiceContainer> {
+class _GroomingContainerState extends State<GroomingContainer> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -83,7 +83,7 @@ class _ServiceContainerState extends State<ServiceContainer> {
                                       )),
                                 ]),
                           ),
-                          ComboService(onPress: widget.onPress)
+                          // GroomingCombo(onPress: widget.onPress)
                         ],
                       ));
                 }),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/pages/pet/pet_detail.dart';
-import 'package:pet_spa/src/pages/pet/pet_model.dart';
+import 'package:pet_spa/src/models/pet_model.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/ultis/utils.dart';

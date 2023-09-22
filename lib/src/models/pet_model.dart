@@ -1,4 +1,4 @@
-enum PetType { cat, dog }
+import 'type_pet_model.dart';
 
 class PetModel {
   int id;
@@ -8,7 +8,7 @@ class PetModel {
   String breed;
   String color;
   bool isFavorite;
-  PetType type;
-  PetModel(this.id, this.name, this.type, this.gender, this.birthday,
+  int petTypeId;
+  PetModel(this.id, this.name, this.petTypeId, this.gender, this.birthday,
       this.breed, this.color, this.isFavorite);
 }

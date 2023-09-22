@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pet_spa/src/pages/pet/pets.dart';
+import 'package:pet_spa/src/pages/settings/widgets/address.dart';
 import 'package:pet_spa/src/pages/settings/widgets/complain.dart';
 import 'package:pet_spa/src/pages/settings/widgets/member_card.dart';
 import 'package:pet_spa/src/pages/settings/widgets/password.dart';
@@ -12,7 +13,7 @@ import 'package:pet_spa/src/widgets/text.dart';
 import '../../theme/Color.dart';
 import '../../theme/Metrics.dart';
 
-enum SettingItem { MY_PETS, COMPLAIN, PASSWORD, HELP, SETTING }
+enum SettingItem { MY_PETS, COMPLAIN, PASSWORD, HELP, SETTING, ADDRESS }
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -34,6 +35,10 @@ class _SettingState extends State<Setting> {
       case SettingItem.PASSWORD:
         Navigator.push(context,
             CupertinoPageRoute(builder: (context) => const Password()));
+        return;
+      case SettingItem.ADDRESS:
+        Navigator.push(
+            context, CupertinoPageRoute(builder: (context) => const Address()));
         return;
       default:
         return;
@@ -107,7 +112,7 @@ class _SettingState extends State<Setting> {
                   Item(
                     "Địa chỉ đã lưu",
                     Icons.bookmark_border_rounded,
-                    onPress: () {},
+                    onPress: () => _onPressItem(SettingItem.ADDRESS),
                   ),
                   Divider(height: padding_regular.top),
                   Item(

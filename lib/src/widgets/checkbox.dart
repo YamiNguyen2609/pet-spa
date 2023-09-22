@@ -37,12 +37,16 @@ class AppCheckbox extends StatelessWidget {
             height: size,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: value ? color_secondary_1 : Colors.transparent,
                 borderRadius: BorderRadius.all(radius),
-                border: Border.all(
-                    width: border,
-                    color: value ? color_secondary_1 : borderColor)),
-            child: Icon(Icons.check, color: Colors.white, size: size - 4),
+                border: Border.all(width: border, color: borderColor)),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(radius),
+                child: SizedBox(
+                    width: size - 10,
+                    height: size - 10,
+                    child: ColoredBox(
+                      color: value ? color_primary : Colors.transparent,
+                    ))),
           ),
           AppText(
             title,

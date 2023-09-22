@@ -6,11 +6,14 @@ import '../../theme/Metrics.dart';
 
 class Header extends StatelessWidget {
   final String title;
-  const Header(this.title, {super.key});
+  final IconData? icon;
+  final double? iconSize;
+  final Function? onPress;
+  const Header(this.title, {super.key, this.icon, this.iconSize, this.onPress});
 
   @override
   Widget build(BuildContext context) {
-    const double iconSize = 25;
+    const double size = icon_medium;
     return Container(
         height: height_header,
         padding: EdgeInsets.only(
@@ -29,14 +32,22 @@ class Header extends StatelessWidget {
                   child: const Icon(
                     Icons.arrow_back_ios_new_rounded,
                     color: color_primary,
-                    size: iconSize,
+                    size: size,
                   )),
               AppHeading1Text(title, color: color_primary),
-              const Icon(
-                null,
-                color: color_primary,
-                size: iconSize,
-              )
+              icon != null
+                  ? GestureDetector(
+                      onTap: () => onPress!(),
+                      child: Icon(
+                        icon,
+                        color: color_primary,
+                        size: iconSize ?? iconSize,
+                      ))
+                  : const Icon(
+                      null,
+                      color: color_primary,
+                      size: size,
+                    )
             ]));
   }
 }

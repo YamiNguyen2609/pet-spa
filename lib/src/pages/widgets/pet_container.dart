@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/data/data.dart';
+import 'package:pet_spa/src/data/data.dart';
 import 'package:pet_spa/src/pages/widgets/title.dart';
-import 'package:pet_spa/src/pages/pet/pet_model.dart';
+import 'package:pet_spa/src/models/pet_model.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/scrollview.dart';
 
-import '../../../theme/Color.dart';
-import '../../../theme/Metrics.dart';
-import '../../../widgets/text.dart';
+import '../../theme/Color.dart';
+import '../../theme/Metrics.dart';
+import '../../widgets/text.dart';
 
 class PetContainer extends StatefulWidget {
   final PetModel model;
@@ -62,8 +62,8 @@ class ContainerPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cats = pets.where((element) => element.type == PetType.cat).toList();
-    var dogs = pets.where((element) => element.type == PetType.dog).toList();
+    var cats = pets;
+    var dogs = pets;
     return Container(
       width: Utils.width(context),
       height: Utils.height(context) * 2 / 3,

@@ -11,7 +11,8 @@ class HeaderTitle extends StatelessWidget {
     return AppHeading2Text(
       title,
       color: Colors.black87,
-      margin: padding_regular,
+      margin: EdgeInsets.symmetric(
+          horizontal: padding_regular.left, vertical: padding_small.top),
     );
   }
 }

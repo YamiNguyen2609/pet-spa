@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 double status_bar_height = Platform.isIOS ? 50 : 30;
 double padding_bottom = Platform.isIOS ? 20 : 10;
-double height_default = 71;
+double height_default = 72;
 double height_header = status_bar_height + 70;
 
 //marign - padding

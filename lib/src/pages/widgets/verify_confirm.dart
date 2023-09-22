@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/data/data.dart';
+import 'package:pet_spa/src/data/data.dart';
 import 'package:pet_spa/src/pages/widgets/header.dart';
 import 'package:pet_spa/src/pages/widgets/title.dart';
 import 'package:pet_spa/src/widgets/card.dart';
@@ -24,156 +24,153 @@ class _VerifyConfirmState extends State<VerifyConfirm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: background_color,
-        body: Column(children: [
-          const Header('Xác nhận'),
-          AppScollview(children: [
-            const HeaderTitle('Thông tin'),
-            CardContainer(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Khách hàng',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(user.name,
-                    size: text_size_medium, color: Colors.black87)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Điện thoại',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(user.phone,
-                    size: text_size_medium, color: Colors.black87)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Thú cưng',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(pets[0].name,
-                    size: text_size_medium, color: Colors.black87)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Cửa hàng',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(stores[0].name,
-                    size: text_size_medium, color: Colors.black87)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppLabelMediumText('Địa chỉ đón',
-                        color: Colors.black54, weight: FontWeight.w500),
-                    AppText('Nhận tại cửa hàng',
-                        size: text_size_medium, color: Colors.black87)
-                  ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Dịch vụ',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText('Chăm sóc chải chuốt',
-                    size: text_size_medium, color: Colors.black87)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Gói dịch vụ',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(combos[0].name,
-                    size: text_size_medium, color: Colors.black87)
-              ]),
+      backgroundColor: background_color,
+      body: Column(children: [
+        const Header('Xác nhận'),
+        AppScollview(children: [
+          const HeaderTitle('Thông tin'),
+          CardContainer(children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Khách hàng',
+                  color: Colors.black54, weight: FontWeight.w500),
+              AppText(user.name, size: text_size_medium, color: Colors.black87)
             ]),
-            const HeaderTitle('Thanh toán'),
-            CardContainer(children: [
-              const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppLabelMediumText('Mã khuyến mãi',
-                        color: Colors.black54, weight: FontWeight.w500),
-                    AppText('1234567', size: text_size_medium)
-                  ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Phương thức thanh toán',
-                    color: Colors.black54, weight: FontWeight.w500),
-                GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                        context: context,
-                        useSafeArea: true,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: radius_small),
-                        ),
-                        builder: (BuildContext context) {
-                          return const PaymentPanel();
-                        }),
-                    child: const AppText('ATM', size: text_size_medium))
-              ]),
-            ]),
-            SizedBox(
-              height: padding_regular.top,
+            Divider(
+              height: padding_large.top,
             ),
-            CardContainer(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Gói dịch vụ',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(Utils.FormatCurrency(combos[0].cost),
-                    size: text_size_medium, color: color_red)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Dịch vụ tùy chọn',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(Utils.FormatCurrency(combos[0].cost),
-                    size: text_size_medium, color: color_red)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Mã khuyến mãi',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(Utils.FormatCurrency(20000),
-                    size: text_size_medium, color: color_red)
-              ]),
-              Divider(
-                height: padding_large.top,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Tổng cộng',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppText(Utils.FormatCurrency(20000),
-                    size: text_size_medium, color: color_red)
-              ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Điện thoại',
+                  color: Colors.black54, weight: FontWeight.w500),
+              AppText(user.phone, size: text_size_medium, color: Colors.black87)
+            ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Thú cưng',
+                  color: Colors.black54, weight: FontWeight.w500),
+              AppText(pets[0].name,
+                  size: text_size_medium, color: Colors.black87)
+            ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Cửa hàng',
+                  color: Colors.black54, weight: FontWeight.w500),
+              AppText(stores[0].name,
+                  size: text_size_medium, color: Colors.black87)
+            ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppLabelMediumText('Địa chỉ đón',
+                      color: Colors.black54, weight: FontWeight.w500),
+                  AppText('Nhận tại cửa hàng',
+                      size: text_size_medium, color: Colors.black87)
+                ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Dịch vụ',
+                  color: Colors.black54, weight: FontWeight.w500),
+              AppText('Chăm sóc chải chuốt',
+                  size: text_size_medium, color: Colors.black87)
+            ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Gói dịch vụ',
+                  color: Colors.black54, weight: FontWeight.w500),
+              // AppText(combos[0].name,
+              //     size: text_size_medium, color: Colors.black87)
             ]),
           ]),
-          AppButton(
-              type: ButtonType.TextButton,
-              text: 'Thanh toán',
-              backgroundColor: color_primary,
-              margin: padding_regular,
-              height: 50,
-              radius: radius_large,
-              onPress: () => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => const VerifyConfirm())))
-        ]));
+          const HeaderTitle('Thanh toán'),
+          CardContainer(children: [
+            const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppLabelMediumText('Mã khuyến mãi',
+                      color: Colors.black54, weight: FontWeight.w500),
+                  AppText('1234567', size: text_size_medium)
+                ]),
+            Divider(
+              height: padding_large.top,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const AppLabelMediumText('Phương thức thanh toán',
+                  color: Colors.black54, weight: FontWeight.w500),
+              GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                      context: context,
+                      useSafeArea: true,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: radius_small),
+                      ),
+                      builder: (BuildContext context) {
+                        return const PaymentPanel();
+                      }),
+                  child: const AppText('ATM', size: text_size_medium))
+            ]),
+          ]),
+          SizedBox(
+            height: padding_regular.top,
+          ),
+          // CardContainer(children: [
+          //   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          //     const AppLabelMediumText('Gói dịch vụ',
+          //         color: Colors.black54, weight: FontWeight.w500),
+          //     AppText(Utils.FormatCurrency(combos[0].cost),
+          //         size: text_size_medium, color: color_red)
+          //   ]),
+          //   Divider(
+          //     height: padding_large.top,
+          //   ),
+          //   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          //     const AppLabelMediumText('Dịch vụ tùy chọn',
+          //         color: Colors.black54, weight: FontWeight.w500),
+          //     AppText(Utils.FormatCurrency(combos[0].cost),
+          //         size: text_size_medium, color: color_red)
+          //   ]),
+          Divider(
+            height: padding_large.top,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const AppLabelMediumText('Mã khuyến mãi',
+                color: Colors.black54, weight: FontWeight.w500),
+            AppText(Utils.FormatCurrency(20000),
+                size: text_size_medium, color: color_red)
+          ]),
+          Divider(
+            height: padding_large.top,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const AppLabelMediumText('Tổng cộng',
+                color: Colors.black54, weight: FontWeight.w500),
+            AppText(Utils.FormatCurrency(20000),
+                size: text_size_medium, color: color_red)
+          ]),
+        ]),
+      ]),
+      // AppButton(
+      //     type: ButtonType.TextButton,
+      //     text: 'Thanh toán',
+      //     backgroundColor: color_primary,
+      //     margin: padding_regular,
+      //     height: 50,
+      //     radius: radius_large,
+      //     onPress: () => Navigator.push(
+      //         context,
+      //         CupertinoPageRoute(
+      //             builder: (context) => const VerifyConfirm())))
+    );
   }
 }
 

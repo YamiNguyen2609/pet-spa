@@ -10,8 +10,8 @@ class CardContainer extends StatelessWidget {
   final Radius radius;
   const CardContainer(
       {super.key,
-      this.margin = padding_regular,
-      this.padding = padding_regular,
+      this.margin = padding_small,
+      this.padding = padding_small,
       this.radius = radius_regular,
       required this.children});
 
@@ -20,10 +20,13 @@ class CardContainer extends StatelessWidget {
     return Container(
       width: Utils.width(context) - padding_regular.left * 2,
       padding: padding,
-      margin: EdgeInsets.symmetric(horizontal: margin.left),
+      margin: margin,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.all(radius)),
-      child: Column(children: children),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children),
     );
   }
 }

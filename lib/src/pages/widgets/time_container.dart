@@ -6,27 +6,27 @@ import 'package:intl/intl.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/Calendar.dart';
 
-import '../../../theme/Color.dart';
-import '../../../theme/Metrics.dart';
-import '../../../widgets/text.dart';
+import '../../theme/Color.dart';
+import '../../theme/Metrics.dart';
+import '../../widgets/text.dart';
 
-class TimeService extends StatefulWidget {
+class TimeContainer extends StatefulWidget {
   final DateTime date;
   final DateTime time;
   final double height;
   final EdgeInsets margin;
   final Function onChange;
-  const TimeService(this.date, this.time,
+  const TimeContainer(this.date, this.time,
       {super.key,
       this.height = 0,
       this.margin = EdgeInsets.zero,
       required this.onChange});
 
   @override
-  State<TimeService> createState() => _TimeServiceState();
+  State<TimeContainer> createState() => _TimeContainerState();
 }
 
-class _TimeServiceState extends State<TimeService> {
+class _TimeContainerState extends State<TimeContainer> {
   bool expand = false;
   int state = -1;
   DateTime date = DateTime.now();
@@ -81,9 +81,11 @@ class _TimeServiceState extends State<TimeService> {
                       onTap: () => _tooglePanel(0),
                       child: Container(
                         padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: color_secondary_1,
-                            borderRadius: BorderRadius.all(radius_tiny)),
+                        decoration: BoxDecoration(
+                            color: expand && state == 0
+                                ? color_primary
+                                : color_secondary_1,
+                            borderRadius: const BorderRadius.all(radius_tiny)),
                         margin: EdgeInsets.only(right: padding_tiny.bottom),
                         child: AppText(
                           DateFormat('dd-MM-yyyy').format(date),
@@ -96,9 +98,11 @@ class _TimeServiceState extends State<TimeService> {
                       onTap: () => _tooglePanel(1),
                       child: Container(
                         padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: color_secondary_1,
-                            borderRadius: BorderRadius.all(radius_tiny)),
+                        decoration: BoxDecoration(
+                            color: expand && state == 1
+                                ? color_primary
+                                : color_secondary_1,
+                            borderRadius: const BorderRadius.all(radius_tiny)),
                         child: AppText(
                           DateFormat('HH:mm').format(time),
                           color: Colors.white,

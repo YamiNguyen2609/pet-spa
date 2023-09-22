@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/pet/header.dart';
-import 'package:pet_spa/src/pages/pet/pet_model.dart';
+import 'package:pet_spa/src/pages/pet/widgets/header.dart';
+import 'package:pet_spa/src/models/pet_model.dart';
 import 'package:pet_spa/src/widgets/scrollview.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';

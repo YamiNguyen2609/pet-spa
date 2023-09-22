@@ -1,11 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/home/beauty.dart';
-import 'package:pet_spa/src/pages/launcher.dart';
-import 'package:pet_spa/src/pages/login.dart';
 import 'package:pet_spa/src/pages/main.dart';
-import 'package:pet_spa/src/pages/widgets/verify_confirm.dart';
+import 'package:pet_spa/src/pages/pet/pet_form.dart';
 
 class RootContainer extends StatefulWidget {
   const RootContainer({super.key});
@@ -26,6 +23,8 @@ class _RootContainerState extends State<RootContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Main());
+    return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(body: PetForm(null)));
   }
 }

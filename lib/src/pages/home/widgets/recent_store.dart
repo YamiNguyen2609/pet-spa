@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/pages/data/data.dart';
-import 'package:pet_spa/src/pages/home/location.dart';
-import 'package:pet_spa/src/pages/widgets/title.dart';
-import 'package:pet_spa/src/ultis/utils.dart';
-import 'package:pet_spa/src/widgets/button.dart';
-import 'package:pet_spa/src/widgets/text.dart';
+import 'package:pet_spa/src/pages/stores/store_detail.dart';
 
+import '../../../data/data.dart';
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
+import '../../../ultis/utils.dart';
+import '../../../widgets/button.dart';
+import '../../../widgets/text.dart';
+import '../../stores/stores.dart';
+import '../../widgets/title.dart';
 
 class RecentStore extends StatelessWidget {
   const RecentStore({super.key});
@@ -27,13 +28,13 @@ class RecentStore extends StatelessWidget {
             AppButton(
                 type: ButtonType.TextButton,
                 text: 'xem thêm',
-                textColor: color_secondary_1,
+                textColor: Colors.black54,
                 size: text_size_medium,
-                width: 65,
+                width: 80,
                 height: 30,
                 margin: EdgeInsets.only(right: padding_regular.right),
                 onPress: () => Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => const Location())))
+                    CupertinoPageRoute(builder: (context) => const Stores())))
           ],
         ),
         SizedBox(
@@ -42,7 +43,19 @@ class RecentStore extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: List.generate(
                   3,
-                  (index) => Container(
+                  (index) => GestureDetector(
+                      onTap: () => showModalBottomSheet(
+                          context: context,
+                          useSafeArea: true,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: radius_medium),
+                          ),
+                          builder: (BuildContext context) {
+                            return StoreDetail(stores[index]);
+                          }),
+                      child: Container(
                         width: Utils.width(context) - padding_regular.left * 6,
                         margin: EdgeInsets.only(
                             right: padding_regular.right,
@@ -100,7 +113,7 @@ class RecentStore extends StatelessWidget {
                                     ))
                                   ]))
                             ]),
-                      )),
+                      ))),
             )),
       ],
     );

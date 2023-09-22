@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pet_spa/src/pages/home/widgets/header_main.dart';
-import 'package:pet_spa/src/pages/home/widgets/recent_store.dart';
-import 'package:pet_spa/src/pages/home/widgets/service.dart';
-import 'package:pet_spa/src/widgets/bottom.dart';
-import 'package:pet_spa/src/widgets/scrollview.dart';
 import '../../theme/Color.dart';
+import '../../widgets/bottom.dart';
+import '../../widgets/scrollview.dart';
 import 'widgets/banner.dart';
+import 'widgets/header_main.dart';
+import 'widgets/recent_store.dart';
+import 'widgets/service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
