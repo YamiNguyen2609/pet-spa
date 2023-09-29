@@ -25,6 +25,6 @@ class _RootContainerState extends State<RootContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(body: PetForm(null)));
+        child: const Scaffold(body: Main()));
   }
 }

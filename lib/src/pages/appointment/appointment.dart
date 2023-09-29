@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 
-import 'header.dart';
+import '../../widgets/scrollview.dart';
 
 class Appointment extends StatefulWidget {
   const Appointment({super.key});
@@ -21,10 +21,8 @@ class _AppointmentState extends State<Appointment> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
-      child:
-          SafeArea(child: Column(children: [Header(onPressTab: onPressTab)])),
-    );
+    return const CupertinoPageScaffold(
+        backgroundColor: background_color,
+        child: Column(children: [AppScollview(children: [])]));
   }
 }

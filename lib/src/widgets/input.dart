@@ -88,7 +88,7 @@ class _AppInputState extends State<AppInput> {
       keyboardType = TextInputType.phone;
     } else if (widget.type == InputType.MultilineInput) {
       keyboardType = TextInputType.multiline;
-      Height = Height * widget.minLine;
+      Height = 30.0 * widget.minLine;
     }
     InputBorder inputBorder = UnderlineInputBorder(
         borderSide: BorderSide(
@@ -105,39 +105,43 @@ class _AppInputState extends State<AppInput> {
       height: Height,
       margin: widget.margin,
       alignment: Alignment.centerLeft,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        widget.label != ''
-            ? Flexible(
-                child: AppText(
-                widget.label,
-                size: text_size_medium,
-                weight: FontWeight.w500,
-                color: Colors.black54,
-                margin: EdgeInsets.only(bottom: padding_tiny.bottom / 2),
-              ))
-            : const SizedBox(),
-        TextField(
-          controller: _controller,
-          keyboardType: keyboardType,
-          minLines: widget.minLine,
-          maxLines: widget.maxLine,
-          decoration: InputDecoration(
-              prefixIcon: widget.icon,
-              prefixIconColor: widget.iconColor,
-              filled: true,
-              isDense: true,
-              fillColor: widget.backgroundColor,
-              contentPadding: widget.contentPadding,
-              focusedBorder: inputBorder,
-              border: inputBorder,
-              enabledBorder: inputBorder,
-              hintText:
-                  widget.placeholder == '' ? widget.label : widget.placeholder,
-              hintStyle: TextStyle(color: widget.placeholderColor)),
-          style:
-              TextStyle(color: widget.textColor, fontWeight: FontWeight.w500),
-        )
-      ]),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            widget.label != ''
+                ? Flexible(
+                    child: AppText(
+                    widget.label,
+                    size: text_size_medium,
+                    weight: FontWeight.w500,
+                    color: Colors.black54,
+                    margin: EdgeInsets.only(bottom: padding_tiny.bottom / 2),
+                  ))
+                : const SizedBox(),
+            TextField(
+              controller: _controller,
+              keyboardType: keyboardType,
+              minLines: widget.minLine,
+              maxLines: widget.maxLine,
+              decoration: InputDecoration(
+                  prefixIcon: widget.icon,
+                  prefixIconColor: widget.iconColor,
+                  filled: true,
+                  isDense: true,
+                  fillColor: widget.backgroundColor,
+                  contentPadding: widget.contentPadding,
+                  focusedBorder: inputBorder,
+                  border: inputBorder,
+                  enabledBorder: inputBorder,
+                  hintText: widget.placeholder == ''
+                      ? widget.label
+                      : widget.placeholder,
+                  hintStyle: TextStyle(color: widget.placeholderColor)),
+              style: TextStyle(
+                  color: widget.textColor, fontWeight: FontWeight.w500),
+            )
+          ]),
     );
   }
 }

@@ -109,6 +109,17 @@ class Item extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: renderWidget(item.items!),
+          ),
+          Divider(
+            height: padding_regular.top,
+          ),
+          AppButton(
+            onPress: () => {},
+            type: ButtonType.TextButton,
+            text: 'Đặt ngay',
+            backgroundColor: color_primary,
+            height: 40,
+            radius: radius_tiny,
           )
         ]);
   }

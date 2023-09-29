@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_spa/src/pages/appointment/appointment.dart';
 import 'package:pet_spa/src/pages/home/home.dart';
 import 'package:pet_spa/src/pages/settings/Setting.dart';
 import 'package:pet_spa/src/theme/Color.dart';
@@ -16,7 +17,7 @@ class _MainState extends State<Main> {
   int _selectedIndex = 0;
   static const List<Widget> widgets = <Widget>[
     Home(),
-    Home(),
+    Appointment(),
     Home(),
     Home(),
     Setting(),
