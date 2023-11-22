@@ -1,26 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_spa/src/models/veterinary_model.dart';
-import 'package:pet_spa/src/pages/service/veterinary/veterinary_container.dart';
-
-import '../../../models/store_model.dart';
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
+import '../../../theme/constant.dart';
 import '../../../ultis/utils.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/card.dart';
+import '../../../widgets/checkbox.dart';
 import '../../../widgets/scrollview.dart';
 import '../../../widgets/text.dart';
 import '../../../data/data.dart';
-import '../../../models/pet_model.dart';
 import '../../widgets/header.dart';
-import '../../widgets/pet_container.dart';
-import '../../widgets/pickup_container.dart';
-import '../grooming/grooming_container.dart';
-import '../../widgets/store_container.dart';
-import '../../widgets/time_container.dart';
 import '../../widgets/title.dart';
-import '../../widgets/verify_confirm.dart';
 
 class Veterinary extends StatefulWidget {
   const Veterinary({super.key});
@@ -30,123 +21,194 @@ class Veterinary extends StatefulWidget {
 }
 
 class _VeterinaryState extends State<Veterinary> {
-  PetModel _selectedPet = pets[0];
-  DateTime _date = DateTime.now();
-  DateTime _time = DateTime.now();
-  StoreModel _selectedLocation = stores[0];
-  List<VeterinaryModel> _selectedVeterinaries = List.empty(growable: true);
-  bool isPickupAtHome = true;
-  void _setPet(item) {
-    setState(() {
-      _selectedPet = item;
-      Navigator.pop(context);
-    });
+  List<int> vaccination_selected = List.empty(growable: true);
+  List<int> treatment_selected = List.empty(growable: true);
+
+  void _onSelectVaccination(int id) {
+    if (!vaccination_selected.contains(id)) {
+      setState(() {
+        vaccination_selected.add(id);
+      });
+    } else {
+      setState(() {
+        vaccination_selected.remove(id);
+      });
+    }
   }
 
-  void _setDateTime(date, time) {
-    String x = "";
-    setState(() {
-      _date = date;
-      _time = time;
-    });
+  void _onSelectTreatment(int id) {
+    if (!treatment_selected.contains(id)) {
+      setState(() {
+        treatment_selected.add(id);
+      });
+    } else {
+      setState(() {
+        treatment_selected.remove(id);
+      });
+    }
   }
 
-  void _setVeterinaries(VeterinaryModel item) {
-    setState(() {
-      var index =
-          _selectedVeterinaries.indexWhere((element) => element.id == item.id);
-      if (index == -1) {
-        _selectedVeterinaries.add(item);
-      } else {
-        _selectedVeterinaries.removeAt(index);
-      }
-    });
+  void _onSubmit() {
+    if (vaccination_selected.isEmpty && treatment_selected.isEmpty) return;
   }
 
   @override
   Widget build(BuildContext context) {
+    double vaccination_total = vaccination_selected.isNotEmpty
+        ? veterinaries
+            .where((element) => vaccination_selected.contains(element.id))
+            .map((e) => e.value)
+            .reduce((value, element) => value + element)
+        : 0;
+    double treatment_total = treatment_selected.isNotEmpty
+        ? veterinaries
+            .where((element) => treatment_selected.contains(element.id))
+            .map((e) => e.value)
+            .reduce((value, element) => value + element)
+        : 0;
     return Scaffold(
         backgroundColor: background_color,
         body: Column(children: [
           const Header("Dịch vụ chăm sóc"),
           AppScollview(children: [
-            const HeaderTitle('Thông tin'),
-            CardContainer(children: [
-              PetContainer(_selectedPet, onPress: _setPet),
-            ]),
-            const HeaderTitle('Hệ thống cửa hàng'),
+            const HeaderTitle("Tiêm chủng"),
             CardContainer(
-              children: [
-                StoreContainer(_selectedLocation, onPress: () {}),
-                Divider(
-                  height: padding_large.top,
-                ),
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const AppText(
-                        'Tự đến cửa hàng',
-                        size: text_size_medium,
-                        weight: FontWeight.w500,
-                        color: Colors.black54,
-                      ),
-                      SizedBox(
-                          width: 45,
-                          height: 30,
-                          child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: CupertinoSwitch(
-                                  value: isPickupAtHome,
-                                  activeColor: color_primary,
-                                  onChanged: (bool value) => setState(() {
-                                        isPickupAtHome = value;
-                                      }))))
-                    ]),
-                AnimatedContainer(
-                    width: Utils.width(context) - padding_small.left * 4,
-                    height: isPickupAtHome ? 0 : 44 + padding_tiny.top,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.fastOutSlowIn,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(top: padding_tiny.top),
-                    child: PickupContainer(_selectedLocation, onPress: () {})),
-                Divider(
-                  height: padding_large.top,
-                ),
-                TimeContainer(_date, _time, onChange: _setDateTime),
-              ],
-            ),
-            const HeaderTitle('Dịch vụ'),
-            VeterinaryContainer(_selectedVeterinaries,
-                onPress: _setVeterinaries),
-            const HeaderTitle('Thanh toán'),
-            CardContainer(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const AppLabelMediumText('Tổng cộng',
-                    color: Colors.black54, weight: FontWeight.w500),
-                AppLabelMediumText(
-                  Utils.FormatCurrency(_selectedVeterinaries.isNotEmpty
-                      ? _selectedVeterinaries
-                          .map((e) => e.value)
-                          .reduce((value, element) => value + element)
-                      : 0),
-                  color: color_red,
-                )
-              ]),
-            ]),
+                margin: EdgeInsets.symmetric(horizontal: padding_small.left),
+                children: List.generate(
+                    veterinaries.length,
+                    (index) => Padding(
+                          padding: EdgeInsets.only(
+                            top: index == 0 ? 0 : padding_tiny.top / 2,
+                            bottom: index == veterinaries.length - 1
+                                ? 0
+                                : padding_tiny.top,
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppCheckbox(
+                                  veterinaries[index].name,
+                                  vaccination_selected
+                                      .contains(veterinaries[index].id),
+                                  textSize: text_size_medium,
+                                  radius: radius_large,
+                                  onPress: () => _onSelectVaccination(
+                                      veterinaries![index].id),
+                                ),
+                                AppLabelMediumText(
+                                  Utils.FormatCurrency(
+                                      veterinaries[index].value),
+                                  color: color_red,
+                                  weight: FontWeight.w700,
+                                )
+                              ]),
+                        ))),
+            const HeaderTitle("Vệ sinh - Điều trị"),
+            CardContainer(
+                margin: EdgeInsets.symmetric(horizontal: padding_small.left),
+                children: List.generate(
+                    veterinaries.length,
+                    (index) => Padding(
+                          padding: EdgeInsets.only(
+                            top: index == 0 ? 0 : padding_tiny.top / 2,
+                            bottom: index == veterinaries.length - 1
+                                ? 0
+                                : padding_tiny.top,
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppCheckbox(
+                                  veterinaries[index].name,
+                                  treatment_selected
+                                      .contains(veterinaries[index].id),
+                                  textSize: text_size_medium,
+                                  radius: radius_large,
+                                  onPress: () => _onSelectTreatment(
+                                      veterinaries[index].id),
+                                ),
+                                AppLabelMediumText(
+                                  Utils.FormatCurrency(
+                                      veterinaries[index].value),
+                                  color: color_red,
+                                  weight: FontWeight.w700,
+                                )
+                              ]),
+                        ))),
+            SizedBox(
+              height: padding_regular.top,
+            )
           ]),
-          AppButton(
-              type: ButtonType.TextButton,
-              text: 'Tiếp tục',
-              backgroundColor: color_primary,
-              margin: padding_regular,
-              height: 50,
-              radius: radius_large,
-              onPress: () => Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => const VerifyConfirm())))
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.symmetric(
+                horizontal: padding_small.left, vertical: padding_tiny.top),
+            child: Column(children: [
+              vaccination_selected.isNotEmpty
+                  ? Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const AppText(
+                            'Tiêm chủng',
+                            size: text_size_sub,
+                          ),
+                          AppSubTitleText(
+                            Utils.FormatCurrency(vaccination_total),
+                            color: color_red,
+                            weight: FontWeight.w700,
+                          )
+                        ],
+                      ),
+                      Divider(height: padding_small.top),
+                    ])
+                  : SizedBox(),
+              treatment_selected.isNotEmpty
+                  ? Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const AppText(
+                            'Vệ sinh - Điều trị',
+                            size: text_size_sub,
+                          ),
+                          AppSubTitleText(
+                            Utils.FormatCurrency(treatment_total),
+                            color: color_red,
+                            weight: FontWeight.w700,
+                          )
+                        ],
+                      ),
+                      Divider(height: padding_small.top),
+                    ])
+                  : SizedBox(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const AppText(
+                    'Tổng cộng',
+                    size: text_size_sub,
+                  ),
+                  AppSubTitleText(
+                    Utils.FormatCurrency(vaccination_total + treatment_total),
+                    color: color_red,
+                    weight: FontWeight.w700,
+                  )
+                ],
+              ),
+              AppButton(
+                onPress: () => {},
+                type: ButtonType.TextButton,
+                text: 'Thanh toán',
+                backgroundColor: vaccination_total + treatment_total > 0
+                    ? color_primary
+                    : Colors.black26,
+                height: 40,
+                margin: EdgeInsets.only(top: padding_small.top),
+                radius: radius_tiny,
+              )
+            ]),
+          )
         ]));
   }
 }

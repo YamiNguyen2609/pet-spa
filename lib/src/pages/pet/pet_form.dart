@@ -8,6 +8,7 @@ import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/Calendar.dart';
 import '../../models/pet_model.dart';
+import '../../theme/constant.dart';
 import '../../widgets/Switch.dart';
 import '../../widgets/text.dart';
 import '../widgets/header.dart';
@@ -96,6 +97,7 @@ class _PetFormState extends State<PetForm> {
                     width: Utils.width(context) - padding_small.left * 2 - 100,
                     backgroundColor: Colors.white,
                     contentPadding: padding_tiny,
+                    onChangeText: () => {},
                   ),
                   SizedBox(
                       height: height_default,
@@ -174,13 +176,14 @@ class _PetFormState extends State<PetForm> {
               label: 'Chủng loại',
               onTap: () => _showTypePet(context),
             )),
-            const FormCard(
+            FormCard(
               child: AppInput(
                 label: 'Màu lông',
                 border: 1,
                 placeholder: 'xám, xám đen,...',
                 backgroundColor: Colors.white,
                 contentPadding: padding_tiny,
+                onChangeText: () => {},
               ),
             ),
             FormCard(
@@ -196,6 +199,7 @@ class _PetFormState extends State<PetForm> {
                   backgroundColor: Colors.white,
                   contentPadding: padding_tiny,
                   type: InputType.NumberInput,
+                  onChangeText: () => {},
                 ),
                 FormItem(
                   label: 'Nhóm máu',
@@ -205,7 +209,7 @@ class _PetFormState extends State<PetForm> {
                 ),
               ],
             )),
-            const FormCard(
+            FormCard(
               child: AppInput(
                 label: 'Tiền sử bệnh',
                 border: 1,
@@ -214,6 +218,7 @@ class _PetFormState extends State<PetForm> {
                 backgroundColor: Colors.white,
                 contentPadding: padding_tiny,
                 type: InputType.MultilineInput,
+                onChangeText: () => {},
               ),
             )
           ])

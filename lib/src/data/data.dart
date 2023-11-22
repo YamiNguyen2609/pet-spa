@@ -1,7 +1,10 @@
 import 'package:pet_spa/src/models/address_model.dart';
 import 'package:pet_spa/src/models/user_model.dart';
+import 'package:pet_spa/src/theme/constant.dart';
 
+import '../models/appoinment_model.dart';
 import '../models/grooming_combo_model.dart';
+import '../models/lodging_model.dart';
 import '../models/store_model.dart';
 import '../models/grooming_option_in_combo_model.dart';
 import '../models/type_pet_model.dart';
@@ -714,4 +717,59 @@ final List<TypePetModel> types = [
   TypePetModel(438, "Chó Bun Anh trắng", PetType.dog),
   TypePetModel(439, "Yakutian Laika", PetType.dog),
   TypePetModel(440, "Laika Tây Siberia(Zapadno-Sibirskaïa Laïka)", PetType.dog)
+];
+
+final List<LodgingModel> lodgings = [
+  LodgingModel(1, 'Phòng Đánh giấc',
+      description:
+          'Phòng cơ bản với đầy đủ tiện nghi cơ bản giúp thú cưng có thể ngủ ngon giấc chờ đến khi chủ về.',
+      items: ['WC riêng', 'Sạch sẽ'],
+      cost: 120000),
+  LodgingModel(2, 'Phòng hội họp',
+      description:
+          'Phòng cao cấp đầy đủ tiện nghi công nghệ & sân chơi để các bé hướng ngoại thoải mái chơi đùa cùng bạn bè.',
+      items: ['WC riêng', 'Sạch sẽ', 'Sân chơi', 'Điều hòa'],
+      cost: 150000),
+  LodgingModel(3, 'Phòng Hoàng gia',
+      description:
+          'Phòng thượng hạng với đầy đủ tiện nghi cao cấp nhất cho thú cưng cảm giác thoải mái như đang sống tại nhà.',
+      items: ['WC riêng', 'Sạch sẽ', 'Sân chơi', 'Điều hòa', 'Camera quan sát'],
+      cost: 210000),
+];
+
+final List<AppointmentModel> appointments = [
+  AppointmentModel(1, Service.Lodging,
+      state: 0,
+      code: 'L123456',
+      pet: pets[0],
+      lodging: lodgings[1],
+      dateStart: DateTime.now(),
+      store: stores[0],
+      dateEnd: DateTime.now().add(const Duration(days: 1, hours: 5))),
+  AppointmentModel(
+    2,
+    Service.Grooming,
+    state: 1,
+    code: 'S123456',
+    pet: pets[1],
+    grooming: grooming_combos[2],
+    store: stores[2],
+    dateStart: DateTime.now(),
+  ),
+  AppointmentModel(
+    3,
+    Service.Veterinary,
+    state: 2,
+    code: 'V123456',
+    pet: pets[2],
+    store: stores[1],
+    dateStart: DateTime.now(),
+  ),
+  AppointmentModel(3, Service.Veterinary,
+      state: 2,
+      code: 'V123457',
+      pet: pets[2],
+      dateStart: DateTime.now(),
+      store: stores[0],
+      isCancel: true),
 ];

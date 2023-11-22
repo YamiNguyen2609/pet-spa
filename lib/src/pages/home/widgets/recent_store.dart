@@ -5,6 +5,7 @@ import 'package:pet_spa/src/pages/stores/store_detail.dart';
 import '../../../data/data.dart';
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
+import '../../../theme/constant.dart';
 import '../../../ultis/utils.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/text.dart';
@@ -12,7 +13,8 @@ import '../../stores/stores.dart';
 import '../../widgets/title.dart';
 
 class RecentStore extends StatelessWidget {
-  const RecentStore({super.key});
+  final VoidCallback onMoveStore;
+  const RecentStore({super.key, required this.onMoveStore});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,7 @@ class RecentStore extends StatelessWidget {
                 width: 80,
                 height: 30,
                 margin: EdgeInsets.only(right: padding_regular.right),
-                onPress: () => Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => const Stores())))
+                onPress: onMoveStore)
           ],
         ),
         SizedBox(

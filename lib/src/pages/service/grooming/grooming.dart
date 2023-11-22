@@ -1,20 +1,17 @@
-import 'dart:async';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pet_spa/src/pages/service/grooming/grooming_detail.dart';
 import 'package:pet_spa/src/widgets/card.dart';
 import '../../../data/data.dart';
 import '../../../models/grooming_combo_model.dart';
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
+import '../../../theme/constant.dart';
 import '../../../ultis/utils.dart';
 import '../../../widgets/button.dart';
-import '../../../widgets/checkbox.dart';
 import '../../../widgets/scrollview.dart';
 import '../../../widgets/text.dart';
 import '../../widgets/header.dart';
-import '../../widgets/title.dart';
-import '../payment/payment.dart';
 
 class Grooming extends StatefulWidget {
   const Grooming({super.key});
@@ -84,7 +81,9 @@ class Item extends StatelessWidget {
         margin: EdgeInsets.only(
             left: padding_small.left,
             right: padding_small.right,
-            top: index == 0 ? 0 : padding_small.top),
+            top: index == 0 ? 0 : padding_small.top,
+            bottom:
+                index == grooming_combos.length - 1 ? padding_small.top : 0),
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -114,7 +113,8 @@ class Item extends StatelessWidget {
             height: padding_regular.top,
           ),
           AppButton(
-            onPress: () => {},
+            onPress: () => Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => GroomingDetail(item))),
             type: ButtonType.TextButton,
             text: 'Đặt ngay',
             backgroundColor: color_primary,

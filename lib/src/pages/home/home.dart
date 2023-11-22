@@ -8,7 +8,8 @@ import 'widgets/recent_store.dart';
 import 'widgets/service.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final Function onMoveTab;
+  const Home({super.key, required this.onMoveTab});
 
   @override
   State<Home> createState() => _HomeState();
@@ -18,12 +19,16 @@ class _HomeState extends State<Home> {
   double imageSize = 35;
   @override
   Widget build(BuildContext context) {
-    return const CupertinoPageScaffold(
+    return CupertinoPageScaffold(
         backgroundColor: background_color,
         child: Column(children: [
-          HeaderMain(),
-          AppScollview(
-              children: [SlideBanner(), Service(), RecentStore(), Bottom()])
+          const HeaderMain(),
+          AppScollview(children: [
+            const SlideBanner(),
+            const Service(),
+            RecentStore(onMoveStore: () => widget.onMoveTab(2)),
+            const Bottom()
+          ])
         ]));
   }
 }

@@ -28,21 +28,23 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const AppInput(
+                  AppInput(
                     placeholder: "User Name",
                     icon: Icon(Icons.person),
                     iconColor: color_secondary_1,
                     placeholderColor: color_secondary_1,
                     textColor: color_secondary_1,
                     radius: radius_tiny,
+                    onChangeText: () => {},
                   ),
-                  const AppInput(
+                  AppInput(
                     placeholder: "Password",
                     icon: Icon(Icons.lock),
                     iconColor: color_secondary_1,
                     placeholderColor: color_secondary_1,
                     textColor: color_secondary_1,
                     radius: radius_tiny,
+                    onChangeText: () => {},
                   ),
                   AppButton(
                     height: 55,

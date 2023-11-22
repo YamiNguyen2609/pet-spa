@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
 import 'package:pet_spa/src/widgets/text.dart';
+import '../../../theme/constant.dart';
 import '../../../widgets/input.dart';
 import '../../../widgets/card.dart';
 import '../../widgets/title.dart';
@@ -39,6 +40,7 @@ class _AddressDetailState extends State<AddressDetail> {
                 height: 35,
                 borderColor: Colors.transparent,
                 contentPadding: EdgeInsets.only(bottom: padding_tiny.top),
+                onChangeText: () => {},
               ),
               Divider(height: padding_tiny.top / 5),
               AppInput(
@@ -47,6 +49,7 @@ class _AddressDetailState extends State<AddressDetail> {
                 height: 35,
                 borderColor: Colors.transparent,
                 contentPadding: EdgeInsets.only(top: padding_tiny.top),
+                onChangeText: () => {},
               )
             ]),
             const HeaderTitle('Địa chỉ'),
@@ -56,6 +59,7 @@ class _AddressDetailState extends State<AddressDetail> {
                 height: 35,
                 borderColor: Colors.transparent,
                 contentPadding: EdgeInsets.only(bottom: padding_tiny.top),
+                onChangeText: () => {},
               ),
               Divider(height: padding_tiny.top / 5),
               GestureDetector(

@@ -3,9 +3,8 @@ import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
+import '../theme/constant.dart';
 import '../ultis/utils.dart';
-
-enum ButtonType { TextButton, IconButton, ImageButton, CustomButton }
 
 class AppButton extends StatelessWidget {
   final String text;

@@ -2,15 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/widgets/text.dart';
 
+import '../theme/constant.dart';
 import '../ultis/utils.dart';
-
-enum InputType {
-  TextInput,
-  PasswordInput,
-  NumberInput,
-  PhoneInput,
-  MultilineInput
-}
 
 class AppInput extends StatefulWidget {
   final String value;
@@ -33,6 +26,7 @@ class AppInput extends StatefulWidget {
   final double borderUnderLine;
   final int minLine;
   final int? maxLine;
+  final Function onChangeText;
 
   const AppInput(
       {super.key,
@@ -55,7 +49,8 @@ class AppInput extends StatefulWidget {
       this.padding = EdgeInsets.zero,
       this.contentPadding = EdgeInsets.zero,
       this.minLine = 1,
-      this.maxLine});
+      this.maxLine,
+      required this.onChangeText});
 
   @override
   State<AppInput> createState() => _AppInputState();
@@ -100,48 +95,26 @@ class _AppInputState extends State<AppInput> {
               BorderSide(color: widget.borderColor, width: widget.border));
     }
 
-    return Container(
+    return SizedBox(
       width: Width,
       height: Height,
-      margin: widget.margin,
-      alignment: Alignment.centerLeft,
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            widget.label != ''
-                ? Flexible(
-                    child: AppText(
-                    widget.label,
-                    size: text_size_medium,
-                    weight: FontWeight.w500,
-                    color: Colors.black54,
-                    margin: EdgeInsets.only(bottom: padding_tiny.bottom / 2),
-                  ))
-                : const SizedBox(),
-            TextField(
-              controller: _controller,
-              keyboardType: keyboardType,
-              minLines: widget.minLine,
-              maxLines: widget.maxLine,
-              decoration: InputDecoration(
-                  prefixIcon: widget.icon,
-                  prefixIconColor: widget.iconColor,
-                  filled: true,
-                  isDense: true,
-                  fillColor: widget.backgroundColor,
-                  contentPadding: widget.contentPadding,
-                  focusedBorder: inputBorder,
-                  border: inputBorder,
-                  enabledBorder: inputBorder,
-                  hintText: widget.placeholder == ''
-                      ? widget.label
-                      : widget.placeholder,
-                  hintStyle: TextStyle(color: widget.placeholderColor)),
-              style: TextStyle(
-                  color: widget.textColor, fontWeight: FontWeight.w500),
-            )
-          ]),
+      child: TextField(
+        decoration: InputDecoration(
+            filled: true,
+            isDense: true,
+            labelText:
+                widget.placeholder == '' ? widget.label : widget.placeholder,
+            labelStyle: TextStyle(color: widget.placeholderColor),
+            fillColor: widget.backgroundColor,
+            contentPadding: widget.contentPadding,
+            focusedBorder: inputBorder,
+            border: inputBorder,
+            enabledBorder: inputBorder),
+        style: TextStyle(
+            fontSize: text_size_sub,
+            color: widget.textColor,
+            fontWeight: FontWeight.w500),
+      ),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:pet_spa/src/widgets/input.dart';
 
 import '../../theme/Color.dart';
 import '../../ultis/utils.dart';
+import '../../widgets/bottom.dart';
 import '../../widgets/scrollview.dart';
 import '../../widgets/text.dart';
 
@@ -23,54 +24,58 @@ class Stores extends StatefulWidget {
 double height = 90;
 
 class _StoresState extends State<Stores> {
+  String searchValue = "";
+
+  void _onSearch(text) {
+    setState(() {
+      searchValue = text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<StoreModel> recents = booked_stores
+        .where((element) => element.name.contains(searchValue))
+        .toList();
     return Scaffold(
         backgroundColor: background_color,
-        body: Column(
-          children: [
-            const Header("Hệ thống cửa hàng"),
-            Container(
-                color: Colors.white,
-                padding: padding_tiny,
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      child: Container(
-                        width: Utils.width(context) - padding_tiny.left * 2,
-                        height: 50,
-                        padding: padding_tiny,
-                        decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(radius_tiny),
-                            border:
-                                Border.all(width: 1, color: Colors.black26)),
-                        child: Row(children: [
-                          const Icon(
-                            Icons.search_rounded,
-                            size: icon_medium,
-                            color: Colors.black45,
-                          ),
-                          AppSubTitleText(
-                            'Tìm kiếm',
-                            margin: EdgeInsets.only(left: padding_tiny.left),
-                            weight: FontWeight.w500,
-                            color: Colors.black45,
-                          )
-                        ]),
+        body: SizedBox(
+            width: Utils.width(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.only(
+                        top: status_bar_height + padding_tiny.top,
+                        left: padding_small.left,
+                        right: padding_small.right,
+                        bottom: padding_tiny.bottom),
+                    child: AppInput(
+                      width: 20,
+                      height: 50,
+                      border: 1.5,
+                      borderColor: Colors.black26,
+                      icon: const Icon(
+                        Icons.search_rounded,
+                        size: icon_medium,
+                        color: Colors.black45,
                       ),
-                    )
-                  ],
-                )),
-            AppScollview(children: [
-              const HeaderTitle('Cửa hàng đặt gần đây'),
-              ...List.generate(booked_stores.length,
-                  (index) => Item(booked_stores[index], index)),
-              const HeaderTitle('Các cửa hàng khác'),
-              ...List.generate(
-                  stores.length, (index) => Item(stores[index], index))
-            ])
-          ],
-        ));
+                      placeholder: 'Tìm kiếm',
+                      placeholderColor: Colors.black45,
+                      onChangeText: _onSearch,
+                    )),
+                AppScollview(children: [
+                  const HeaderTitle('Cửa hàng gần đây'),
+                  ...List.generate(
+                      recents.length, (index) => Item(recents[index], index)),
+                  const HeaderTitle('Các cửa hàng khác'),
+                  ...List.generate(
+                      stores.length, (index) => Item(stores[index], index)),
+                  const Bottom()
+                ])
+              ],
+            )));
   }
 }
 
@@ -93,15 +98,13 @@ class Item extends StatelessWidget {
               return StoreDetail(store);
             }),
         child: Container(
-          width: Utils.width(context) - padding_regular.left * 2,
+          width: Utils.width(context) - padding_small.left * 2,
           height: height,
           padding: padding_tiny,
           margin: EdgeInsets.only(
-              left: padding_regular.left,
-              right: padding_regular.right,
-              bottom: index == stores.length - 1
-                  ? padding_regular.bottom
-                  : padding_tiny.bottom / 2,
+              left: padding_small.left,
+              right: padding_small.right,
+              bottom: index == stores.length - 1 ? 0 : padding_tiny.bottom / 2,
               top: index == 0 ? 0 : padding_tiny.top / 2),
           decoration: BoxDecoration(
               color: Colors.white,

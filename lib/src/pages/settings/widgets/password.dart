@@ -3,6 +3,7 @@ import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/widgets/input.dart';
 
 import '../../../theme/Color.dart';
+import '../../../theme/constant.dart';
 import '../../../widgets/button.dart';
 import '../../../widgets/card.dart';
 import '../../widgets/header.dart';
@@ -27,17 +28,20 @@ class _PasswordState extends State<Password> {
               label: 'Mật khẩu cũ',
               margin: EdgeInsets.only(bottom: padding_regular.bottom),
               contentPadding: EdgeInsets.symmetric(vertical: padding_tiny.top),
+              onChangeText: () => {},
             ),
             AppInput(
               type: InputType.PasswordInput,
               label: 'Mật khẩu mới',
               margin: EdgeInsets.only(bottom: padding_regular.bottom),
               contentPadding: EdgeInsets.symmetric(vertical: padding_tiny.top),
+              onChangeText: () => {},
             ),
             AppInput(
               type: InputType.PasswordInput,
               label: 'Xác nhận mật khẩu mới',
               contentPadding: EdgeInsets.symmetric(vertical: padding_tiny.top),
+              onChangeText: () => {},
             )
           ]),
           AppButton(

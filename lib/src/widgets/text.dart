@@ -10,10 +10,12 @@ class AppText extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppText(this.text,
       {super.key,
       this.weight = FontWeight.w500,
       this.size = text_size_normal,
+      this.italic = false,
       this.line,
       this.overflow,
       this.color = color_primary,
@@ -36,6 +38,7 @@ class AppText extends StatelessWidget {
             fontWeight: weight,
             fontSize: size,
             color: color,
+            fontStyle: italic ? FontStyle.italic : FontStyle.normal,
             decoration: TextDecoration.none),
       )),
     );
@@ -49,10 +52,12 @@ class AppLabelText extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppLabelText(this.text,
       {super.key,
       this.line,
       this.overflow,
+      this.italic = false,
       this.weight = FontWeight.w700,
       this.color = color_primary,
       this.margin = EdgeInsets.zero});
@@ -76,10 +81,12 @@ class AppLabelMediumText extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppLabelMediumText(this.text,
       {super.key,
       this.line,
       this.overflow,
+      this.italic = false,
       this.weight = FontWeight.w900,
       this.color = color_primary,
       this.margin = EdgeInsets.zero});
@@ -103,10 +110,12 @@ class AppSubTitleText extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppSubTitleText(this.text,
       {super.key,
       this.line,
       this.overflow,
+      this.italic = false,
       this.weight = FontWeight.w700,
       this.color = color_primary,
       this.margin = EdgeInsets.zero});
@@ -130,10 +139,12 @@ class AppHeading2Text extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppHeading2Text(this.text,
       {super.key,
       this.line,
       this.overflow,
+      this.italic = false,
       this.weight = FontWeight.w800,
       this.color = color_primary,
       this.margin = EdgeInsets.zero});
@@ -157,10 +168,12 @@ class AppHeading1Text extends StatelessWidget {
   final FontWeight weight;
   final TextOverflow? overflow;
   final int? line;
+  final bool italic;
   const AppHeading1Text(this.text,
       {super.key,
       this.line,
       this.overflow,
+      this.italic = false,
       this.weight = FontWeight.bold,
       this.color = color_primary,
       this.margin = EdgeInsets.zero});

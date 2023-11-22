@@ -25,11 +25,12 @@ class _PickupContainerState extends State<PickupContainer> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               AppLabelMediumText(
+                color: Colors.black87,
                 widget.model.name,
               ),
               AppLabelText(
                 '${widget.model.address}, P.${widget.model.ward}, Q.${widget.model.district}, ${widget.model.city}',
-                color: color_secondary_1,
+                color: Colors.black54,
                 line: 1,
                 overflow: TextOverflow.ellipsis,
               )

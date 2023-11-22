@@ -3,6 +3,7 @@ import 'package:pet_spa/src/widgets/input.dart';
 import '../../../models/type_pet_model.dart';
 import '../../../theme/Color.dart';
 import '../../../theme/Metrics.dart';
+import '../../../theme/constant.dart';
 import '../../../ultis/utils.dart';
 import '../../../widgets/scrollview.dart';
 import '../../../widgets/text.dart';
@@ -75,6 +76,7 @@ class _TypeContainerState extends State<TypeContainer> {
                     width: Utils.width(context) - padding_tiny.left * 2 - 40,
                     backgroundColor: Colors.white,
                     contentPadding: padding_tiny,
+                    onChangeText: () => {},
                   ),
                   GestureDetector(
                     onTap: _collapseFilter,

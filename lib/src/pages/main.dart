@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/src/pages/appointment/appointment.dart';
 import 'package:pet_spa/src/pages/home/home.dart';
 import 'package:pet_spa/src/pages/settings/Setting.dart';
+import 'package:pet_spa/src/pages/stores/stores.dart';
 import 'package:pet_spa/src/theme/Color.dart';
 import 'package:pet_spa/src/theme/Metrics.dart';
 import 'package:pet_spa/src/ultis/utils.dart';
@@ -15,13 +16,16 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _selectedIndex = 0;
-  static const List<Widget> widgets = <Widget>[
-    Home(),
-    Appointment(),
-    Home(),
-    Home(),
-    Setting(),
-  ];
+  List<Widget> widgets() {
+    return <Widget>[
+      Home(
+        onMoveTab: _onItemTapped,
+      ),
+      const Appointment(),
+      const Stores(),
+      const Setting(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -33,9 +37,8 @@ class _MainState extends State<Main> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBody: true,
-        body: Stack(
-          children: [widgets[_selectedIndex]],
-        ),
+        resizeToAvoidBottomInset: false,
+        body: widgets()[_selectedIndex],
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: GestureDetector(
           child: Container(
@@ -134,7 +137,7 @@ class Navigation extends StatelessWidget {
                     ),
                   ),
                   ClipPath(
-                      clipper: Customshape(),
+                      clipper: MainNavigator(),
                       child: Container(
                           width: 74,
                           height: 56,
@@ -151,14 +154,14 @@ class Navigation extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       NavigationItem(
-                        Icons.message_rounded,
-                        index == 3,
-                        onPress: () => onPress(4),
+                        Icons.store_mall_directory_rounded,
+                        index == 2,
+                        onPress: () => onPress(2),
                       ),
                       NavigationItem(
                         Icons.person,
-                        index == 4,
-                        onPress: () => onPress(4),
+                        index == 3,
+                        onPress: () => onPress(3),
                       ),
                     ]),
               )),
@@ -190,7 +193,7 @@ class NavigationItem extends StatelessWidget {
   }
 }
 
-class Customshape extends CustomClipper<Path> {
+class MainNavigator extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     double height = size.height;
@@ -202,8 +205,6 @@ class Customshape extends CustomClipper<Path> {
     path.lineTo(width, height);
     path.lineTo(width, 0);
     path.quadraticBezierTo(width / 2, 38, 0, 0);
-    // path.lineTo(height, height);
-    // path.lineTo(height, 0);
 
     path.close();
     return path;
